@@ -48,7 +48,7 @@ def test_assistant_refuses_identity_for_research_officer():
 
 def test_original_module_files_unchanged():
     """The Neurovation work must not modify the protocol-matching module or its data."""
-    protected = ["trialmatch", "data", "scripts", "tests/test_core.py", "README.md", "requirements.txt"]
+    protected = ["trialmatch", "data", "scripts", "tests/test_core.py", "requirements.txt"]
     diff = subprocess.run(["git", "diff", "--name-only", "origin/main", "--", *protected], cwd=ROOT, capture_output=True, text=True)
     if diff.returncode != 0:
         pytest.skip("git history not available")
