@@ -24,7 +24,7 @@ Neurovation turns a trial protocol into a structured eligibility checklist. It s
 You need [Node.js 20+](https://nodejs.org) (LTS) and Git.
 
 ```bash
-git clone https://github.com/<your-org>/neurovation.git
+git clone https://github.com/gongtingchen-dotcom/Neurovation.git
 ```
 
 ```bash
@@ -88,7 +88,7 @@ A repo is just source code. It becomes software when you **build** it and put th
 
 | Option | Effort | Good for |
 |---|---|---|
-| **GitHub Pages** (already set up in `.github/workflows/deploy.yml`) | ~0. Push to `main` and get a link like `https://<org>.github.io/neurovation/` | Demo day, sharing with judges and seniors |
+| **GitHub Pages** (already set up in `.github/workflows/deploy.yml`) | ~0. Push to `main` and get a link like `https://gongtingchen-dotcom.github.io/Neurovation/` | Demo day, sharing with judges and seniors |
 | **Vercel / Netlify** | Connect the repo once | Preview link for every PR, so reviewers can click and see the change |
 | **Desktop app** with [Tauri](https://tauri.app) or Electron | A day | Running offline on a hospital laptop, a double-clickable `.exe` / `.dmg` |
 | **Hospital deployment** (container behind the hospital network, with a backend) | Weeks, after IRB | The real pilot: records never leave the hospital |
