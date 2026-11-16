@@ -17,6 +17,7 @@ from trialmatch import matcher as M
 from trialmatch import scoring as S
 from trialmatch.llm import DEFAULT_MODEL, get_client
 from trialmatch.pdf import extract_text
+from neurovation.ui import role_picker  # Neurovation: shared sidebar role picker
 
 ROOT = Path(__file__).parent
 DATA = ROOT / "data"
@@ -62,6 +63,7 @@ with st.sidebar:
         st.info("Offline mode: no ANTHROPIC_API_KEY. Demo matching and rule-based criteria extraction only.")
     st.write(f"{len(patients)} synthetic patients loaded")
     st.caption("Pass = requirement met. For an exclusion criterion, Pass = the exclusion does not apply.")
+    role_picker()  # Neurovation: shared "Signed in as" block, same on every page
 
 tab1, tab2, tab3 = st.tabs(["1 · Protocol", "2 · Ranked patients", "3 · Evidence"])
 
