@@ -1,14 +1,8 @@
-# Neurovation: clinical trial recruitment pipeline
+# Neurovation: clinical trial recruitment
 
-A prototype that takes a Parkinson's disease (PD) trial from **protocol** to **enrolled participant** in one app:
+Neurovation reads a trial protocol, checks every patient's notes against each eligibility criterion, and ranks who is likely eligible, with the exact sentence behind every verdict. The clinician then approves who to contact, sends consent forms (or records paper consent), and tracks recruitment, all in one app.
 
-1. Read the protocol's eligibility criteria.
-2. Pre-screen patients, with the evidence for every criterion.
-3. A clinician reviews and approves who may be contacted.
-4. Electronic consent (eConsent) with a comprehension check.
-5. Track recruitment, ask questions of the study data, and check how well screening works.
-
-All patients are **synthetic**. The match score only orders a review queue; **a clinician decides**.
+All patients are **synthetic**. The match score only orders the review queue; **a clinician makes every decision**.
 
 ## Quick start
 
@@ -17,106 +11,85 @@ You need Python 3.10 or newer.
     pip install -r requirements.txt
     streamlit run app.py
 
-Then:
-
-1. On **app**: tab 1 → **Use the bundled sample protocol**; tab 2 → **Run matching**; tab 3 shows the evidence.
-2. Open **Dashboard** → **Simulate demo progress** to fill the workflow with synthetic decisions and consent events.
-3. Switch roles under **Signed in as** in the sidebar to try what each role is allowed to do.
+1. **Home** → **Get started**.
+2. **Protocol matching**: **Use the bundled sample protocol** (or upload a PDF), check the criteria, then **Submit**. A progress bar ranks the patients, and the Screening page opens.
+3. **Screening**: hover over a patient to preview the evidence; click to open the record; **Approve for contact**, **Need more info** or **Not eligible**. The next patient opens automatically.
+4. **Consent**: **Send to all not yet sent** (or tick patients and **Send to selected**). For the demo, **Simulate replies** fills in synthetic answers. Use the ⋮ menu → **Record paper consent** to review a scanned form.
+5. **Dashboard** and **Chatbox**: see where recruitment stalls, and ask questions in plain language.
 
 Run the tests with `python -m pytest`.
 
-## The pipeline
+## Pages
 
-```
- Protocol PDF ─▶ [1 · Protocol matching] ─▶ ranked patients + evidence per criterion
-                                                  │
-                                [2 · Review and approve]  research officer reviews, principal investigator approves
-                                                  │
-                                [3 · Consent and onboarding]  invitation → comprehension check → signature → study ID → enrolment
-                                                  │
-                     [4 · Dashboard] ◀──▶ [5 · Study assistant]
-                                                  │
-         Running underneath: [Validation] · [Audit trail] · roles · one shared look
-```
+| Sidebar | What it does |
+|---|---|
+| **Home** | What the software does, the four steps, **Get started**. |
+| **1 · Protocol matching** | Upload a protocol PDF (or the bundled sample). Criteria are extracted by Claude, or by a rule-based parser without an API key, into an editable table. **Submit** matches every patient (Demo or Live mode) with a progress bar. |
+| **2 · Screening** | Locked until a protocol is submitted. Ranked table with colour-coded status. **Hover** over rank, patient or score for the highlighted clinic note; **hover** over the Pass / Fail / Unknown count for just those criteria, with just those sentences highlighted. **Click** a row to open the record beside the table: criteria with quoted evidence, the highlighted clinic note, the activity history, and the decision buttons. This page replaces the original "Ranked patients" and "Evidence" tabs and the separate review page, which showed the same information three times. |
+| **3 · Consent** | Approved patients, with rank, screening status, masked contact details, consent status (Not sent / Sent / Consent obtained / Declined / Enrolled) and one action per row: send, open the participant's e-consent form (5-question comprehension check, below 4/5 triggers a call-back), enrol. Bulk send to selected or to all. The ⋮ menu: record paper consent, resend, mark declined, reset. |
+| Paper consent | Opened from the Consent page. Upload a scan or take a photo of the signed form, tick the review checklist, then **Approve scan**: the patient shows **Consent obtained (paper)**. |
+| **Dashboard** | Headline numbers (each opens the right page), a clickable funnel, "needs attention" lists, why patients are excluded and what the notes don't say (click a bar to list those patients), and recent activity. Every patient ID opens that patient's record. |
+| **Chatbox** | Questions in plain language: "Tell me about patient 2", "Who is one criterion short?", "Where are we with consent?". With `ANTHROPIC_API_KEY` set, Claude answers using tools that look everything up in the study data (model `claude-opus-5-5`, override with `CHATBOX_MODEL`). Without a key, built-in offline answers cover the common questions. |
 
-| Sidebar page | Module | What it does |
-|---|---|---|
-| **app** | 1 · Protocol matching | Upload a protocol PDF, extract inclusion and exclusion criteria (edit them by hand if needed), match the patients, rank them by match score, and show the quoted evidence for each criterion. Details below. |
-| **Review and approve** | 2 · Clinician review | The ranked list becomes a review queue. Open a patient to see pass / fail / unknown with the quoted sentence for every criterion. **Only the principal investigator** can approve a patient for contact; anyone can request more information or mark a patient not eligible. Every decision is logged. |
-| **Consent and onboarding** | 3 · eConsent | For approved patients: send the invitation → 5-question true/false comprehension check (a score below 4/5 triggers a call-back before signature) → signature → a study ID (NV-001…) → enrolment. An **identity vault** links the study ID to the hospital record number; only the **data custodian** can open it, and must give a reason, which is logged. |
-| **Dashboard** | 4 · Recruitment dashboard | Funnel (identified → not ruled out → approved → invited → consented → enrolled), screen failures by criterion, unknowns by criterion, and a "needs attention" list (unreviewed patients, consent unsigned for over 7 days, comprehension call-backs, open information requests). |
-| **Study assistant** | 5 · Staff assistant | Answers staff questions ("Which patients are one criterion short?", "Who is overdue for consent?") using only the criteria, the matching results and the study records, and lists its sources. Questions about a patient's identity are refused unless the role is data custodian. Every question is logged. |
-| **Validation** | Quality | Compares the matching results with the synthetic patients' correct answers (criterion-level agreement, recall and precision of possible eligibles). Includes a **stress test** that simulates a reader making mistakes, to show how recall falls as errors rise. |
-| **Audit trail** | Quality | Every role switch, decision, consent event, vault access and assistant question, with role and time. Export as CSV. |
-
-### Roles
+### Roles (sidebar → Signed in as)
 
 | Role | Can do |
 |---|---|
-| Research officer | Review patients, request information, mark not eligible, run consent steps |
-| Principal investigator | Everything above, plus **approve a patient for contact** |
-| Data custodian | Open the **identity vault** (with a logged reason) |
+| Principal investigator (default) | Everything, including **approve for contact** |
+| Research officer | Review, request information, mark not eligible, run consent; cannot approve |
+| Data custodian | Sees full (synthetic) contact details on the Consent page |
 
-## Module 1 · Protocol matching (`app.py`, `trialmatch/`)
-
-Upload a protocol PDF, match the synthetic patients, and see them ranked by match score with the evidence for each criterion.
+## Protocol matching engine (`trialmatch/`)
 
 ### Modes
 
 | Mode | Needs | What it does |
 |---|---|---|
 | Demo | nothing | Precomputed verdicts for the bundled sample protocol. No AI. |
-| Live | `ANTHROPIC_API_KEY` | Claude reads each note and gives pass/fail/unknown with a quoted sentence. Evidence not found word for word in the note is downgraded to unknown. |
+| Live | `ANTHROPIC_API_KEY` | Claude reads each note, gives pass/fail/unknown with a quoted sentence. Evidence not found word for word in the note is downgraded to unknown. |
 
-Set a key in PowerShell with `$env:ANTHROPIC_API_KEY="sk-..."` (macOS/Linux: `export ANTHROPIC_API_KEY=sk-...`). Model: `$env:TRIALMATCH_MODEL` (default `claude-sonnet-5-5`).
+Set a key in PowerShell with `$env:ANTHROPIC_API_KEY="sk-..."` (macOS/Linux: `export ANTHROPIC_API_KEY=sk-...`). On Streamlit Community Cloud, add it under the app's **Settings → Secrets** as `ANTHROPIC_API_KEY = "sk-..."`. Matching model: `$env:TRIALMATCH_MODEL` (default `claude-sonnet-5-5`).
 
-Without a key, uploaded PDFs use rule-based criteria extraction (bulleted or "(a) ... (b) ..." layouts). Check the criteria table and fix it by hand before matching.
+Without a key, uploaded PDFs use rule-based criteria extraction (bulleted or "(a) ... (b) ..." layouts). Check the criteria table and fix it by hand before submitting.
 
 ### Score
 
-Score = (passes + 0.5 × unknowns) ÷ criteria, halved for each fail. Status: any fail → **Not eligible**; no fail and no unknown → **Likely eligible**; otherwise **Needs review**. A heuristic for ordering the queue, not a validated model. All later modules use this score and status unchanged.
+Score = (passes + 0.5 × unknowns) ÷ criteria, halved for each fail. Status: any fail → **Not eligible**; no fail and no unknown → **Likely eligible**; otherwise **Needs review**. A heuristic for ordering the queue, not a validated model.
 
 ### Honest status
 
-- Tested: PDF extraction, scoring, evidence validation, demo flow, app smoke test (`pytest`).
-- **Not yet tested: the live Claude path.** Try it on your machine first.
+- Tested: PDF extraction, scoring, evidence validation, demo flow, every page (`pytest`), and the chatbox's Claude tool loop against a fake client.
+- **Not yet tested with a real API key: live matching and the Claude chatbox.** Try them on your machine first.
 - The bundled PDF is a **test fixture** written from the public ClinicalTrials.gov record NCT00056563 (deep brain stimulation vs best medical therapy in Parkinson's disease), not the original protocol.
 
 ### Real protocol to try
 
-Zoon et al. 2024, *Trials* (CC BY 4.0): https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-024-07938-9 → Download PDF. Live mode has no correct answers for it, so read the evidence yourself.
+Zoon et al. 2024, *Trials* (CC BY 4.0): https://trialsjournal.biomedcentral.com/articles/10.1186/s13063-024-07938-9 → Download PDF. There are no correct answers for it, so read the evidence yourself.
 
 ## Data
 
-- `data/patients.json`: **20 synthetic patients** (PT-101 to PT-120). Each has age, sex, one free-text clinic note, and the correct verdict with evidence for each of the 11 sample criteria. Generated by `scripts/make_patients.py`, which mixes likely-eligible, needs-review, near-miss and not-eligible patients.
+- `data/patients.json`: **20 synthetic patients** (PT-101 to PT-120), each with age, sex, one free-text clinic note, and the correct verdict with evidence for the 11 sample criteria. Generated by `scripts/make_patients.py`.
 - `data/sample_criteria.json`: the 11 criteria (6 inclusion, 5 exclusion) from the fixture protocol.
-- Modules 2–5 add **workflow records only**: decisions, consent events, study IDs and the audit log. They live in the browser session and are not written to `data/`. The identity-vault number is a placeholder computed from the patient ID; it is not stored and not real.
-
-## How the modules connect
-
-- If you ran matching on the **app** page, the other pages use those results: your criteria, Demo or Live mode.
-- Otherwise they call the matching module's own functions (`trialmatch.matcher.match_demo`, `trialmatch.scoring.rank`) on the bundled sample protocol.
-- Every page shows the same sidebar: the **Status** block (AI mode, patients loaded), then **Signed in as**.
-
-## Look and feel
-
-`.streamlit/config.toml` gives every page one theme: Inter font, blue `#2A56C6` for actions, a cool grey scale, light borders, and green / red / amber for pass / fail / unknown. It is configuration only.
+- The app adds **workflow records only**: decisions, consent, study IDs and an activity log, held in the browser session and never written to `data/`. Contact details are synthetic, generated from the study ID, and masked unless the role is data custodian.
 
 ## Layout
 
-    app.py                     Module 1: protocol matching (Streamlit entry page)
-    trialmatch/                matching engine: pdf, criteria, matcher, scoring, llm
-    pages/                     Modules 2–5 and quality pages (one file per sidebar page)
-    neurovation/state.py       shared session state: decisions, consent records, audit log
-    neurovation/ui.py          page header, shared sidebar (Status + Signed in as), badges
-    neurovation/assistant.py   grounded study assistant
-    .streamlit/config.toml     shared theme
+    app.py                     entry point: page list, shared look, sidebar
+    views/                     one file per page
+      home.py  protocol.py  screening.py  consent.py  consent_scan.py  dashboard.py  chatbox.py
+    neurovation/               shared app code
+      state.py                 session state: protocol, results, decisions, consent, activity log
+      ui.py                    design tokens, badges, page header, sidebar navigation
+      patient_table.py         interactive ranked table (hover previews, click to open)
+      chat.py                  chatbox: Claude with data-lookup tools, plus offline answers
+    trialmatch/                protocol-matching engine: pdf, criteria, matcher, scoring, llm
     scripts/                   make_fixture.py, make_patients.py (regenerate data/)
     data/                      fixture PDF, 20 synthetic patients, sample criteria
-    tests/                     test_core.py (matching), test_neurovation.py (other modules)
+    tests/                     test_core.py (engine), test_neurovation.py (pages, workflow, chatbox)
+    .streamlit/config.toml     theme
 
 ## Limits
 
 - Workflow records last for the browser session; there is no database yet.
-- Correct answers exist only for the bundled sample protocol, so Validation needs that protocol loaded.
-- All patients are synthetic. Not for clinical use.
+- Correct answers exist only for the bundled sample protocol.
+- All patients and contact details are synthetic. Not for clinical use.

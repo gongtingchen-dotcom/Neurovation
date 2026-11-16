@@ -28,6 +28,9 @@ blueColor = "#2A56C6"
 blueBackgroundColor = "#EEF3FE"
 chartCategoricalColors = ["#2A56C6", "#7D9FE8", "#C5D4F6", "#101828"]
 
+[client]
+toolbarMode = "minimal"
+
 [theme.sidebar]
-backgroundColor = "#F8F9FB"
+backgroundColor = "#FFFFFF"
 showSidebarBorder = true
