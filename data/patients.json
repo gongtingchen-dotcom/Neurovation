@@ -1,0 +1,1262 @@
+[
+  {
+    "id": "PT-101",
+    "age": 66,
+    "sex": "M",
+    "note": "66-year-old man referred for parkinsonism. MMSE 30/30, no cognitive concerns. Seen with a family member today. Moving overseas next month and unable to attend follow-up visits. No alcohol or drug misuse reported. Diagnosed with idiopathic Parkinson's disease 6 years ago. Sleep is fragmented at night. Early postural instability and vertical gaze palsy, suspicious for progressive supranuclear palsy. Off medication, Hoehn and Yahr stage 3 on examination. Medically fit for stereotactic surgery per pre-operative assessment. Pre-operative brain MRI shows no intracranial abnormality.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 6 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 3 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "66-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "fail",
+        "evidence": "Moving overseas next month and unable to attend follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Pre-operative brain MRI shows no intracranial abnormality."
+      },
+      {
+        "id": "E1",
+        "verdict": "fail",
+        "evidence": "Early postural instability and vertical gaze palsy, suspicious for progressive supranuclear palsy."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "No alcohol or drug misuse reported."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 30/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "unknown",
+        "evidence": ""
+      }
+    ]
+  },
+  {
+    "id": "PT-102",
+    "age": 55,
+    "sex": "F",
+    "note": "55-year-old woman referred for parkinsonism. Family history is unremarkable. No current participation in other clinical trials. Brain MRI reported as normal for age, with no structural lesion. Family can bring the patient to follow-up visits and the patient agrees to attend. Reports some morning stiffness. Social history: non-drinker, no recreational drug use. Levodopa dose has been stable for 3 months. Early postural instability and vertical gaze palsy, suspicious for progressive supranuclear palsy. MMSE 30/30, no cognitive concerns. Off medication, Hoehn and Yahr stage 3 on examination. Parkinsonism is attributed to multiple small strokes (vascular parkinsonism). Anaesthesia review found no contraindication to surgery or stimulation.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "fail",
+        "evidence": "Parkinsonism is attributed to multiple small strokes (vascular parkinsonism)."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 3 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 3 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "55-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "fail",
+        "evidence": "Early postural instability and vertical gaze palsy, suspicious for progressive supranuclear palsy."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 30/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  },
+  {
+    "id": "PT-103",
+    "age": 68,
+    "sex": "M",
+    "note": "68-year-old man referred for parkinsonism. Long-standing idiopathic Parkinson's disease, first symptoms 10 years ago. MMSE 26/30, no cognitive concerns. No features of atypical parkinsonism and a clear levodopa response. Lives locally and is willing to attend scheduled follow-up visits. Reports some morning stiffness. Not enrolled in any other research study. Brain MRI reported as normal for age, with no structural lesion. On anticoagulation for a mechanical heart valve, which contraindicates stereotactic surgery. Seen with a family member today. Antiparkinsonian regimen unchanged for the past 6 months. Off medication, Hoehn and Yahr stage 4 on examination. Social history: non-drinker, no recreational drug use.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 10 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 4 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 6 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "68-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "fail",
+        "evidence": "On anticoagulation for a mechanical heart valve, which contraindicates stereotactic surgery."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 26/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-104",
+    "age": 69,
+    "sex": "F",
+    "note": "69-year-old woman referred for parkinsonism. No alcohol or drug misuse reported. Levodopa dose was increased two weeks ago. Brain MRI shows an old left basal ganglia infarct. Long-standing idiopathic Parkinson's disease, first symptoms 6 years ago. MMSE 27/30, no cognitive concerns. Good, sustained levodopa response; no red flags for Parkinson's plus syndromes. Moving overseas next month and unable to attend follow-up visits. Off medication, Hoehn and Yahr stage 4 on examination. No current participation in other clinical trials. Seen with a family member today. Sleep is fragmented at night. Medically fit for stereotactic surgery per pre-operative assessment.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 6 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 4 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "fail",
+        "evidence": "Levodopa dose was increased two weeks ago."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "69-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "fail",
+        "evidence": "Moving overseas next month and unable to attend follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "fail",
+        "evidence": "Brain MRI shows an old left basal ganglia infarct."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "Good, sustained levodopa response; no red flags for Parkinson's plus syndromes."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "No alcohol or drug misuse reported."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 27/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  },
+  {
+    "id": "PT-105",
+    "age": 66,
+    "sex": "F",
+    "note": "66-year-old woman referred for parkinsonism. Lives locally and is willing to attend scheduled follow-up visits. Medically fit for stereotactic surgery per pre-operative assessment. MMSE 30/30, no cognitive concerns. Not enrolled in any other research study. Reports some morning stiffness. Good, sustained levodopa response; no red flags for Parkinson's plus syndromes. Diagnosed with idiopathic Parkinson's disease 14 years ago. Levodopa dose has been stable for 6 months. Hoehn and Yahr stage 2.5 recorded, but only in the on-medication state. Brain MRI reported as normal for age, with no structural lesion. Seen with a family member today. Social history: non-drinker, no recreational drug use.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 14 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "unknown",
+        "evidence": "Hoehn and Yahr stage 2.5 recorded, but only in the on-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 6 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "66-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "Good, sustained levodopa response; no red flags for Parkinson's plus syndromes."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 30/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-106",
+    "age": 68,
+    "sex": "F",
+    "note": "68-year-old woman referred for parkinsonism. Pre-operative brain MRI shows no intracranial abnormality. Off medication, Hoehn and Yahr stage 3 on examination. Sleep is fragmented at night. Family history is unremarkable. Family can bring the patient to follow-up visits and the patient agrees to attend. Antiparkinsonian regimen unchanged for the past 12 months. Anaesthesia review found no contraindication to surgery or stimulation. Not enrolled in any other research study. Diagnosed with idiopathic Parkinson's disease 17 years ago. No features of atypical parkinsonism and a clear levodopa response. Cognitive screen normal, MMSE 28/30.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 17 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 3 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 12 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "68-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Pre-operative brain MRI shows no intracranial abnormality."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 28/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-107",
+    "age": 58,
+    "sex": "F",
+    "note": "58-year-old woman referred for parkinsonism. Brain MRI shows an old left basal ganglia infarct. Moving overseas next month and unable to attend follow-up visits. Reports some morning stiffness. No features of atypical parkinsonism and a clear levodopa response. Diagnosed with idiopathic Parkinson's disease 13 years ago. Seen with a family member today. MMSE 28/30, no cognitive concerns. Levodopa dose was increased two weeks ago. Hoehn and Yahr stage 2 in the off-medication state. Medically fit for stereotactic surgery per pre-operative assessment. Social history: non-drinker, no recreational drug use.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 13 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 2 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "fail",
+        "evidence": "Levodopa dose was increased two weeks ago."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "58-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "fail",
+        "evidence": "Moving overseas next month and unable to attend follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "fail",
+        "evidence": "Brain MRI shows an old left basal ganglia infarct."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 28/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "unknown",
+        "evidence": ""
+      }
+    ]
+  },
+  {
+    "id": "PT-108",
+    "age": 73,
+    "sex": "F",
+    "note": "73-year-old woman referred for parkinsonism. Lives locally and is willing to attend scheduled follow-up visits. Diagnosed with idiopathic Parkinson's disease 14 years ago. Levodopa dose has been stable for 9 months. No features of atypical parkinsonism and a clear levodopa response. Hoehn and Yahr stage 3 in the off-medication state. Brain MRI reported as normal for age, with no structural lesion. Tremor-dominant onset on the right side. Medically fit for stereotactic surgery per pre-operative assessment. Cognitive screen normal, MMSE 27/30. Not enrolled in any other research study. Referred from the movement disorders clinic. Social history: non-drinker, no recreational drug use.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 14 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 3 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 9 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "73-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 27/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-109",
+    "age": 65,
+    "sex": "F",
+    "note": "65-year-old woman referred for parkinsonism. Hoehn and Yahr stage 4 in the off-medication state. Diagnosed with idiopathic Parkinson's disease 11 years ago. Social history: non-drinker, no recreational drug use. No features of atypical parkinsonism and a clear levodopa response. MMSE 22/30 and a clinical picture consistent with dementia. Antiparkinsonian regimen unchanged for the past 3 months. Reports some morning stiffness. Brain MRI reported as normal for age, with no structural lesion. Referred from the movement disorders clinic. Anaesthesia review found no contraindication to surgery or stimulation.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 11 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 4 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 3 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "65-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "fail",
+        "evidence": "MMSE 22/30 and a clinical picture consistent with dementia."
+      },
+      {
+        "id": "E5",
+        "verdict": "unknown",
+        "evidence": ""
+      }
+    ]
+  },
+  {
+    "id": "PT-110",
+    "age": 62,
+    "sex": "M",
+    "note": "62-year-old man referred for parkinsonism. Diagnosed with idiopathic Parkinson's disease 7 years ago. Seen with a family member today. Off medication, Hoehn and Yahr stage 3 on examination. Referred from the movement disorders clinic. Brain MRI reported as normal for age, with no structural lesion. Cognitive screen normal, MMSE 26/30. No features of atypical parkinsonism and a clear levodopa response. Not enrolled in any other research study. Lives locally and is willing to attend scheduled follow-up visits. Antiparkinsonian regimen unchanged for the past 9 months. No alcohol or drug misuse reported. Medically fit for stereotactic surgery per pre-operative assessment.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 7 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 3 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 9 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "62-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "No alcohol or drug misuse reported."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 26/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-111",
+    "age": 62,
+    "sex": "F",
+    "note": "62-year-old woman referred for parkinsonism. Family history is unremarkable. Hoehn and Yahr stage 3 in the off-medication state. Long-standing idiopathic Parkinson's disease, first symptoms 12 years ago. Lives locally and is willing to attend scheduled follow-up visits. Referred from the movement disorders clinic. Anaesthesia review found no contraindication to surgery or stimulation. Cognitive screen normal, MMSE 30/30. Social history: non-drinker, no recreational drug use. Antiparkinsonian regimen unchanged for the past 12 months. No features of atypical parkinsonism and a clear levodopa response.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 12 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 3 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 12 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "62-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 30/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "unknown",
+        "evidence": ""
+      }
+    ]
+  },
+  {
+    "id": "PT-112",
+    "age": 78,
+    "sex": "F",
+    "note": "78-year-old woman referred for parkinsonism. Medically fit for stereotactic surgery per pre-operative assessment. Social history: non-drinker, no recreational drug use. Referred from the movement disorders clinic. Cognitive screen normal, MMSE 26/30. No features of atypical parkinsonism and a clear levodopa response. Not enrolled in any other research study. Diagnosed with idiopathic Parkinson's disease 16 years ago. Brain MRI reported as normal for age, with no structural lesion. Levodopa dose has been stable for 6 months. Hoehn and Yahr stage 2 in the off-medication state. Lives locally and is willing to attend scheduled follow-up visits. Sleep is fragmented at night.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 16 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 2 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 6 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "78-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 26/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-113",
+    "age": 56,
+    "sex": "F",
+    "note": "56-year-old woman referred for parkinsonism. Social history: non-drinker, no recreational drug use. Seen with a family member today. Pre-operative brain MRI shows no intracranial abnormality. Off medication, Hoehn and Yahr stage 2 on examination. Parkinsonism is attributed to multiple small strokes (vascular parkinsonism). Cognitive screen normal, MMSE 30/30. No current participation in other clinical trials. Antiparkinsonian regimen unchanged for the past 12 months. Family history is unremarkable. On anticoagulation for a mechanical heart valve, which contraindicates stereotactic surgery. Family can bring the patient to follow-up visits and the patient agrees to attend.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "fail",
+        "evidence": "Parkinsonism is attributed to multiple small strokes (vascular parkinsonism)."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 2 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 12 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "56-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Pre-operative brain MRI shows no intracranial abnormality."
+      },
+      {
+        "id": "E1",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E2",
+        "verdict": "fail",
+        "evidence": "On anticoagulation for a mechanical heart valve, which contraindicates stereotactic surgery."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 30/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  },
+  {
+    "id": "PT-114",
+    "age": 70,
+    "sex": "M",
+    "note": "70-year-old man referred for parkinsonism. Not enrolled in any other research study. Tremor-dominant onset on the right side. Family history is unremarkable. Cognitive screen normal, MMSE 27/30. Brain MRI reported as normal for age, with no structural lesion. Levodopa dose has been stable for 4 months. Family can bring the patient to follow-up visits and the patient agrees to attend. Hoehn and Yahr stage 2.5 recorded, but only in the on-medication state. No alcohol or drug misuse reported. Anaesthesia review found no contraindication to surgery or stimulation. Long-standing idiopathic Parkinson's disease, first symptoms 6 years ago.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 6 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "unknown",
+        "evidence": "Hoehn and Yahr stage 2.5 recorded, but only in the on-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 4 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "70-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "No alcohol or drug misuse reported."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 27/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-115",
+    "age": 57,
+    "sex": "M",
+    "note": "57-year-old man referred for parkinsonism. Family can bring the patient to follow-up visits and the patient agrees to attend. Sleep is fragmented at night. MMSE 30/30, no cognitive concerns. Off medication, Hoehn and Yahr stage 3 on examination. Pre-operative brain MRI shows no intracranial abnormality. Medically fit for stereotactic surgery per pre-operative assessment. No alcohol or drug misuse reported. Diagnosed with idiopathic Parkinson's disease 16 years ago. Seen with a family member today. No current participation in other clinical trials. Levodopa dose was increased two weeks ago.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 16 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 3 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "fail",
+        "evidence": "Levodopa dose was increased two weeks ago."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "57-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Pre-operative brain MRI shows no intracranial abnormality."
+      },
+      {
+        "id": "E1",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "No alcohol or drug misuse reported."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 30/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  },
+  {
+    "id": "PT-116",
+    "age": 68,
+    "sex": "F",
+    "note": "68-year-old woman referred for parkinsonism. Family can bring the patient to follow-up visits and the patient agrees to attend. Antiparkinsonian regimen unchanged for the past 3 months. No features of atypical parkinsonism and a clear levodopa response. Not enrolled in any other research study. MMSE 29/30, no cognitive concerns. Diagnosed with idiopathic Parkinson's disease 13 years ago. Seen with a family member today. Brain MRI reported as normal for age, with no structural lesion. Reports some morning stiffness. Hoehn and Yahr stage 3 in the off-medication state. Medically fit for stereotactic surgery per pre-operative assessment. No alcohol or drug misuse reported.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 13 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 3 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 3 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "68-year-old woman referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Medically fit for stereotactic surgery per pre-operative assessment."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "No alcohol or drug misuse reported."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 29/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-117",
+    "age": 63,
+    "sex": "M",
+    "note": "63-year-old man referred for parkinsonism. No current participation in other clinical trials. Anaesthesia review found no contraindication to surgery or stimulation. Levodopa dose has been stable for 4 months. Long-standing idiopathic Parkinson's disease, first symptoms 16 years ago. No features of atypical parkinsonism and a clear levodopa response. Referred from the movement disorders clinic. Family can bring the patient to follow-up visits and the patient agrees to attend. Brain MRI reported as normal for age, with no structural lesion. Tremor-dominant onset on the right side. MMSE 29/30, no cognitive concerns. Off medication, Hoehn and Yahr stage 2 on examination. Social history: non-drinker, no recreational drug use.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 16 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 2 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 4 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "63-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "MMSE 29/30, no cognitive concerns."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  },
+  {
+    "id": "PT-118",
+    "age": 55,
+    "sex": "M",
+    "note": "55-year-old man referred for parkinsonism. Cognitive screen normal, MMSE 27/30. Brain MRI reported as normal for age, with no structural lesion. Levodopa dose has been stable for 3 months. Off medication, Hoehn and Yahr stage 4 on examination. Tremor-dominant onset on the right side. Moving overseas next month and unable to attend follow-up visits. Social history: non-drinker, no recreational drug use. No current participation in other clinical trials. Referred from the movement disorders clinic. Diagnosed with idiopathic Parkinson's disease 13 years ago. Anaesthesia review found no contraindication to surgery or stimulation.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Diagnosed with idiopathic Parkinson's disease 13 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Off medication, Hoehn and Yahr stage 4 on examination."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Levodopa dose has been stable for 3 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "55-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "fail",
+        "evidence": "Moving overseas next month and unable to attend follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 27/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  },
+  {
+    "id": "PT-119",
+    "age": 72,
+    "sex": "M",
+    "note": "72-year-old man referred for parkinsonism. Social history: non-drinker, no recreational drug use. Brain MRI reported as normal for age, with no structural lesion. Antiparkinsonian regimen unchanged for the past 3 months. Seen with a family member today. Anaesthesia review found no contraindication to surgery or stimulation. Not enrolled in any other research study. Good, sustained levodopa response; no red flags for Parkinson's plus syndromes. Long-standing idiopathic Parkinson's disease, first symptoms 6 years ago. Hoehn and Yahr stage 3 in the off-medication state. Family can bring the patient to follow-up visits and the patient agrees to attend. Reports some morning stiffness. Cognitive screen normal, MMSE 26/30.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 6 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 3 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 3 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "72-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Family can bring the patient to follow-up visits and the patient agrees to attend."
+      },
+      {
+        "id": "I6",
+        "verdict": "pass",
+        "evidence": "Brain MRI reported as normal for age, with no structural lesion."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "Good, sustained levodopa response; no red flags for Parkinson's plus syndromes."
+      },
+      {
+        "id": "E2",
+        "verdict": "pass",
+        "evidence": "Anaesthesia review found no contraindication to surgery or stimulation."
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "pass",
+        "evidence": "Cognitive screen normal, MMSE 26/30."
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "Not enrolled in any other research study."
+      }
+    ]
+  },
+  {
+    "id": "PT-120",
+    "age": 56,
+    "sex": "M",
+    "note": "56-year-old man referred for parkinsonism. Brain MRI has been requested but is not yet done. No current participation in other clinical trials. No features of atypical parkinsonism and a clear levodopa response. Social history: non-drinker, no recreational drug use. Antiparkinsonian regimen unchanged for the past 6 months. Hoehn and Yahr stage 3 in the off-medication state. Long-standing idiopathic Parkinson's disease, first symptoms 12 years ago. Family history is unremarkable. Lives locally and is willing to attend scheduled follow-up visits. Reports some morning stiffness.",
+    "truth": [
+      {
+        "id": "I1",
+        "verdict": "pass",
+        "evidence": "Long-standing idiopathic Parkinson's disease, first symptoms 12 years ago."
+      },
+      {
+        "id": "I2",
+        "verdict": "pass",
+        "evidence": "Hoehn and Yahr stage 3 in the off-medication state."
+      },
+      {
+        "id": "I3",
+        "verdict": "pass",
+        "evidence": "Antiparkinsonian regimen unchanged for the past 6 months."
+      },
+      {
+        "id": "I4",
+        "verdict": "pass",
+        "evidence": "56-year-old man referred for parkinsonism."
+      },
+      {
+        "id": "I5",
+        "verdict": "pass",
+        "evidence": "Lives locally and is willing to attend scheduled follow-up visits."
+      },
+      {
+        "id": "I6",
+        "verdict": "unknown",
+        "evidence": "Brain MRI has been requested but is not yet done."
+      },
+      {
+        "id": "E1",
+        "verdict": "pass",
+        "evidence": "No features of atypical parkinsonism and a clear levodopa response."
+      },
+      {
+        "id": "E2",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E3",
+        "verdict": "pass",
+        "evidence": "Social history: non-drinker, no recreational drug use."
+      },
+      {
+        "id": "E4",
+        "verdict": "unknown",
+        "evidence": ""
+      },
+      {
+        "id": "E5",
+        "verdict": "pass",
+        "evidence": "No current participation in other clinical trials."
+      }
+    ]
+  }
+]

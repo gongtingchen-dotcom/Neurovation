@@ -1,0 +1,57 @@
+[
+  {
+    "id": "I1",
+    "type": "inclusion",
+    "text": "idiopathic Parkinson's disease"
+  },
+  {
+    "id": "I2",
+    "type": "inclusion",
+    "text": "Hoehn and Yahr stage 2 or worse \"off\" medications"
+  },
+  {
+    "id": "I3",
+    "type": "inclusion",
+    "text": "on stable medical therapy for at least one month prior to enrollment"
+  },
+  {
+    "id": "I4",
+    "type": "inclusion",
+    "text": "age > 21"
+  },
+  {
+    "id": "I5",
+    "type": "inclusion",
+    "text": "available and willing to be followed-up according to study protocol"
+  },
+  {
+    "id": "I6",
+    "type": "inclusion",
+    "text": "no intracranial abnormalities that would contraindicate surgery (based on pre-operative magnetic resonance imaging of the brain)"
+  },
+  {
+    "id": "E1",
+    "type": "exclusion",
+    "text": "\"Parkinson's plus\" syndromes"
+  },
+  {
+    "id": "E2",
+    "type": "exclusion",
+    "text": "medical contraindications to surgery or stimulation"
+  },
+  {
+    "id": "E3",
+    "type": "exclusion",
+    "text": "active alcohol or drug abuse"
+  },
+  {
+    "id": "E4",
+    "type": "exclusion",
+    "text": "score on minimental status exam 24 or lower, or other neuropsychological dysfunction (e.g., dementia) that would contraindicate surgery"
+  },
+  {
+    "id": "E5",
+    "type": "exclusion",
+    "text": "concurrent participation in another research protocol"
+  }
+]
