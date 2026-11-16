@@ -115,3 +115,19 @@ export const evaluators: Record<string, Evaluator> = {
       : res('not_met', `${o.value.toFixed(1)} h/day OFF time (< ${p.min}).`, o);
   },
 };
+
+/** Which documented facts each evaluator reads (used to list the source documents for a patient). */
+export const EVALUATOR_FIELDS: Record<string, (keyof PatientFacts)[]> = {
+  idiopathicPD: ['diagnosis'],
+  stnDbsDuration: ['dbsTarget', 'dbsImplantDate'],
+  sasThreshold: ['sas'],
+  noPermanentPeriopComplication: ['periopPermanentComplication'],
+  mocaAbove: ['moca'],
+  languageAdequate: ['languages'],
+  notMostDorsalBilateral: ['mostDorsalContactBilateral'],
+  consentObtainable: [],
+  ageAtLeast: ['age'],
+  sensingIPG: ['sensingIPG'],
+  updrsOffAtLeast: ['updrs3Off'],
+  offHoursAtLeast: ['dailyOffHours'],
+};

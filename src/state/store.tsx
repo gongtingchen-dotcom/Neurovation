@@ -22,6 +22,8 @@ interface Store {
   setRole: (r: Role) => void;
   audit: AuditEntry[];
   log: (action: string, detail: string) => void;
+  selectedId: string | null;
+  setSelectedId: (id: string | null) => void;
 }
 
 const Ctx = createContext<Store | null>(null);
@@ -34,6 +36,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [protocolId, setProtocolIdRaw] = useState(PROTOCOLS[0].id);
   const [role, setRoleRaw] = useState<Role>('Research officer');
   const [decisions, setDecisions] = useState<Record<string, Decision>>({});
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [audit, setAudit] = useState<AuditEntry[]>([
     { at: now(), role: 'Research officer', action: 'Session started', detail: 'Synthetic cohort loaded (n = 220). No real patient data.' },
   ]);
@@ -106,6 +109,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     },
     audit,
     log,
+    selectedId,
+    setSelectedId,
   };
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

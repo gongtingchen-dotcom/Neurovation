@@ -10,7 +10,7 @@ Neurovation turns a trial protocol into a structured eligibility checklist. It s
 | Module | What it shows in the prototype |
 |---|---|
 | **Protocol & criteria** | The real, CC BY 4.0 protocol of Zoon et al. 2024 (dorsal STN-DBS for apathy in PD), encoded as editable rules with their source sentences, evidence source and data-freshness windows. Also a draft-criteria extractor for pasted protocol text. |
-| **Screening queue** | 220 synthetic DBS patients ranked by P(eligible). Each criterion shows its evidence quote. The score breaks down into its terms. Approve, request information or reject; every action is logged. |
+| **Pre-screening** | 220 synthetic DBS patients ranked by P(eligible). Each criterion shows its evidence quote, and the score breaks down into its terms. A *Source documents* tab shows how many documents, across how many systems, a coordinator would have to search by hand. Approve, request information or reject; every action is logged. |
 | **Participants & consent** | eConsent status, form version control, comprehension check and survey completion. A role-gated identity vault. |
 | **Study assistant** | Staff-facing Q&A that answers only from the protocol and the database, cites sources and refuses identity questions. |
 | **Validation** | In-silico shadow mode: recall, precision (Wilson 95% CI), share of charts to review, average precision, criterion-level unknown rates and a coordinator-time model. |
@@ -121,18 +121,20 @@ See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the production design (wh
 
 ## Design system
 
-Calm, clinical and legible. Nothing should look like marketing.
+The look follows the conventions of enterprise clinical-trial software (CTMS, EDC and site-recruitment platforms): quiet light chrome, dense bordered tables, a split-pane patient record, small bordered status badges, and one sober blue for actions. Nothing should look like marketing.
 
 | Token | Hex | Use |
 |---|---|---|
-| Ink navy | `#16324F` | Structure, headings, sidebar |
-| Teal | `#1D7A85` | The one action colour: primary buttons, score bars, selection |
-| Background | `#F5F7F9` | Cool off-white page background (cards are pure white) |
-| Met | `#2F7D5B` | Criterion met |
-| Not met | `#B4473B` | Criterion not met |
-| Unknown | `#A8701A` | Missing or stale evidence |
+| Text 1 / 3 / 5 | `#101828` / `#475467` / `#98A2B3` | Headings / body / hints (cool grey scale) |
+| Border | `#E4E7EC` | Panel and table lines; panels are separated by borders, not heavy shadows |
+| Canvas | `#F8F9FB` | Page background (panels are white) |
+| Primary | `#2A56C6` | The only action colour: primary buttons, score bars, selected rows, active tab |
+| Brand ink | `#0F2742` | Logo mark and assistant avatar |
+| Met | `#067647` on `#ECFDF3` | Criterion met, enrolled, complete |
+| Not met | `#B42318` on `#FEF3F2` | Criterion not met, overdue |
+| Unknown | `#B54708` on `#FFFAEB` | Missing or stale evidence, needs action |
 
-Status is never shown by colour alone: every verdict also has an icon and a word. Type is Inter, with IBM Plex Mono for study IDs and formulas.
+Status is never shown by colour alone: every badge also carries a word. Type is Inter (14 px body, 13.5 px tables, tabular numerals), with IBM Plex Mono for study IDs and formulas.
 
 ## Data and licence notes
 

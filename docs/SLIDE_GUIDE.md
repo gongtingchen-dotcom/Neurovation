@@ -1,7 +1,7 @@
 # Neurovation: slide guide for a scientific presentation
 
 **Audience:** senior scientists and clinician-scientists at A\*STAR. **Register:** a research proposal with a working prototype, not a pitch.
-**Target length:** 14 main slides plus a backup section, about 15 minutes plus Q&A.
+**Target length:** 15 main slides (plus optional slide 3C) and a backup section, about 15 minutes plus Q&A.
 
 ---
 
@@ -19,14 +19,14 @@ Three things make this scientifically interesting rather than "another AI matche
 
 ### Running thread
 
-Use **one real protocol** all the way through: Zoon et al., *Trials* 2024, dorsal STN-DBS for apathy in PD (CC BY 4.0). Every method slide shows its criteria. Delete the current slide 2 (the "Database – DBS trials" notes) and fold its content into slides 4 and 7.
+Use **one real protocol** all the way through: Zoon et al., *Trials* 2024, dorsal STN-DBS for apathy in PD (CC BY 4.0). Every method slide shows its criteria. Delete the current slide 2 (the "Database – DBS trials" notes) and fold its content into slides 3C and 7.
 
 ### Visual language for the deck
 
 The deck should match the prototype so they read as one body of work:
 
-* Navy `#16324F` for titles and structure, one teal accent `#1D7A85`, cool off-white background `#F5F7F9`.
-* Status colours used **only** for verdicts: met `#2F7D5B`, not met `#B4473B`, unknown `#A8701A`. Always with an icon (✓ ✕ ?) as well as colour.
+* Near-black `#101828` for titles, grey `#475467` for body, one blue accent `#2A56C6`, white slides with light-grey `#F8F9FB` panels. Navy `#0F2742` for the title and closing slides.
+* Status colours used **only** for verdicts: met `#067647`, not met `#B42318`, unknown `#B54708`. Always with a word or icon as well as colour.
 * Sentence-case **assertion titles**. The title states the finding: not "Results", but "In simulation, ranking finds every eligible patient after reviewing 21% of charts".
 * A small grey "Synthetic data" tag in the corner of every slide that shows simulated numbers.
 * Citations as short footers (Author, Journal Year) in 10–11 pt grey.
@@ -68,11 +68,65 @@ The deck should match the prototype so they read as one body of work:
 
 ---
 
-### Slide 3: Neuromodulation eligibility depends on evidence that structured EHR fields do not hold
+### Slide 3A: Before contacting one patient, a coordinator must verify 15–30 facts from the record
 
-**This slide is new. It is your core scientific insight.**
+**This slide answers "what do clinicians actually check?"** Use it to make the workload concrete before you mention AI.
 
-**On the slide:** a taxonomy table built from the Zoon et al. criteria.
+**On the slide:** a checklist table of what a typical DBS / neuromodulation trial asks for. These are the standard categories; a given protocol picks a subset and sets its own thresholds.
+
+| Category | Typical criteria | Typical threshold or example | Where it is written down |
+|---|---|---|---|
+| Diagnosis and stage | Idiopathic PD (MDS criteria), disease duration, Hoehn & Yahr stage | ≥ 5 years' duration (CAPSIT-PD) | Neurology clinic letters |
+| Treatment response | Levodopa challenge | ≥ 33% improvement in UPDRS-III, OFF vs best ON (CAPSIT-PD) | Formal challenge report or clinic note |
+| Motor severity | MDS-UPDRS III OFF medication; daily OFF time; dyskinesia | e.g. ≥ 2 h/day OFF on a 3-day diary | Clinic notes; **paper motor diaries** |
+| Cognition | MoCA, MMSE or Mattis DRS, **with a date** | e.g. exclude MoCA ≤ 25 (Zoon et al.) | **Neuropsychology report, often a scanned PDF** |
+| Mood and behaviour | Depression (BDI, MADRS), suicidality (C-SSRS), psychosis, impulse control | Exclude active suicidality or psychosis | Psychiatry letters |
+| Device and surgery | Target (STN or GPi), time since implant, lead position, **active contacts**, IPG model (sensing? MRI-conditional?) | ≥ 3 months of STN DBS; not on the most dorsal contact | Operative note, post-op imaging, **DBS programming report (vendor tablet or portal)** |
+| Imaging | MRI contraindications, atrophy, vascular lesions | Exclude significant atrophy | Radiology reports |
+| Medical safety | Anticoagulants, bleeding risk, comorbidities, pregnancy | — | Medication list, labs |
+| Medication stability | Stable PD medication (LEDD) | Unchanged ≥ 4 weeks | Prescribing record |
+| Practical | Age, language, can attend visits, caregiver, capacity to consent, not in another trial | — | Registration, social notes, **only at interview** |
+
+* Bold the cells that are not structured fields. That is most of them, which is the point.
+* Two numbers in the corner:
+  * **17 → 28**: median eligibility criteria per lung-cancer drug trial, 1986–95 vs 2006–16 (*J Thorac Oncol* 2017, ECOG trials). More criteria were linked to accrual failure in NCI trials (OR 1.09 per decile of criteria length, *Cancer Medicine*).
+  * **1.6%**: share of people with PD who meet strict CAPSIT-PD DBS criteria (4.5% with flexible criteria; Artusi et al., *J Clin Med* 2020). The eligible pool is tiny, so you must screen many to find a few.
+
+**Speaker notes**
+* "Here is what 'screening' means in practice. For each patient, someone has to confirm every row of this table, and every row has a threshold and often a date."
+* Walk through two rows: cognition (find the latest MoCA, check its date, check the cut-off direction) and device (find which contact is active, usually in the programming report, not the EMR).
+* The neuromodulation-specific rows (device state, recent scale scores, diaries) are what make our setting harder than the oncology and cardiology settings where AI screening has been tested.
+* The pool is small, so missing even one eligible patient matters.
+
+---
+
+### Slide 3B: The hospital has the data, but not as answers anyone can query
+
+**This slide answers "don't hospitals already have all the data?"** Yes. But having the data is not the same as having the answers. It is like a library with every book and no index.
+
+**On the slide:** six short reasons, each with a small icon. On the right, the prototype's "Source documents" view (`docs/screenshots/screening-sources.png`), showing one patient: **311 documents → 6 relevant, across 5 systems.**
+
+1. **It is written, not coded.** Only part of the eligibility criteria can be computed from structured EHR fields: a median **55%** (range 38–89%) per protocol across 23 trials and 24 European hospitals (EHR4CR / InSite feasibility study). An expert rating of primary-care criteria put it at **74%**, an optimistic upper bound (Ateya et al., *BMC Med Inform Decis Mak* 2016). The rest are sentences: "SAS 17/42", "no haemorrhage on post-op CT", "active contacts L2 / R10".
+2. **It is scattered.** Notes in the EMR; neuropsychology as scanned PDFs; DBS settings in the manufacturer's programmer or portal; paper motor diaries; referral letters from other hospitals. In Singapore, the NGEMR (Epic) rollout finished at NUHS and NHG in July 2024 and SingHealth is scheduled for 2026–28, so a patient seen across clusters may still have records in two systems.
+3. **It goes out of date.** "MoCA > 25" means a *recent* MoCA. The coordinator must find the latest score and check its date; an old score may no longer be true.
+4. **It needs interpretation.** Negation ("no permanent deficit"), hedging ("probable PD"), contradictions between notes, and idiopathic vs atypical parkinsonism.
+5. **EMR search counts codes, not criteria.** A query for the PD diagnosis code returns a list. It cannot say which patients have a MoCA above 25 from this year, or which contact is active. Feasibility tools (TriNetX, i2b2) give cohort counts, not patient-level, evidence-backed eligibility.
+6. **So it is slow.** 45–60 minutes of chart review per patient (Callies et al. 2025). In our synthetic example: 220 DBS patients × about 185 documents each ≈ **40,000 documents**, about **190 coordinator-hours** to find about 23 eligible patients.
+
+**Speaker notes**
+* Say the question out loud, because the audience is thinking it: "Doesn't the hospital already have all this?"
+* "Yes, the information exists. But it is written in sentences, spread across five or more systems, and some of it goes stale. The EMR can find patients with a PD code; it cannot tell you whose last MoCA was 26 or which DBS contact is switched on."
+* Point to the screenshot: one patient, 311 documents, 6 that matter, in 5 systems. A coordinator does this by hand for every patient.
+* This is exactly the task language models are good at: reading sentences and pointing to where the answer is. Our design keeps the decision with people.
+* Pre-empt the follow-up "why not just add structured fields?": that helps in the long run, but it needs years of workflow change and does not cover external letters, scanned reports or vendor device data.
+
+---
+
+### Slide 3C: Neuromodulation criteria, mapped to the evidence they need (Zoon et al. 2024)
+
+Optional if time is short. It narrows slide 3A to the running example.
+
+**On the slide:** the taxonomy table built from the Zoon et al. criteria.
 
 | Criterion (Zoon et al. 2024) | Criterion type | Where the evidence lives | What makes it hard |
 |---|---|---|---|
@@ -85,12 +139,8 @@ The deck should match the prototype so they read as one body of work:
 | Language | Administrative | Registration | Must be localised (Dutch → SG languages) |
 | Written informed consent | Process | Only at the consent visit | Unknowable from records by definition |
 
-* Visual: colour the "Where the evidence lives" cells by source (EHR / device report / requires contact), the same chips as in the prototype.
-* Footer: "Published oncology and cardiology LLM screening studies rarely face criteria like device state."
-
 **Speaker notes**
-* Walk one row in detail: the dorsal-contact criterion. It needs the programming report, which in many centres lives in the manufacturer's tablet or portal.
-* This creates a new failure mode: a model that says "not met" when it really means "I couldn't find it" silently removes eligible patients.
+* A model that says "not met" when it really means "I couldn't find it" silently removes eligible patients.
 * That is why our design treats *unknown* as a separate state, which leads to the research question.
 
 ---
@@ -329,7 +379,7 @@ Keep your "Trust by design" slide, but present it as a **failure-mode table**. S
 | Current slide | Action |
 |---|---|
 | 1 (blank) | Delete |
-| 2 Database – DBS trials | Delete; content moves to slides 3 and 7 |
+| 2 Database – DBS trials | Delete; content moves to slides 3C and 7 |
 | 3 Title | Retitle as on slide 1 above |
 | 4 The problem | Rework as slide 2 (DBS-specific evidence, not Tufts) |
 | 5 Research officer's day | Move to backup |
@@ -342,7 +392,7 @@ Keep your "Trust by design" slide, but present it as a **failure-mode table**. S
 | 12 Trust by design | Slide 12 as a failure-mode table |
 | 13 Plan | Slide 11, with sample size and outcomes |
 | 14 Ask | Slide 14 |
-| *new* | Slide 3 (taxonomy), 4 (hypotheses), 10 (simulation results), 13 (limitations) |
+| *new* | Slides 3A (what clinicians check), 3B (why having the data is not enough), 3C (Zoon taxonomy), 4 (hypotheses), 10 (simulation results), 13 (limitations) |
 
 ## References to verify before presenting
 
@@ -355,4 +405,10 @@ Check every figure against the primary source. Some figures came from abstracts 
 * Callies A et al. Real-world validation of a multimodal LLM-powered pipeline… arXiv:2503.15374 (2025), a preprint.
 * Parikh RB et al. Human-AI teaming to improve accuracy and efficiency of eligibility prescreening for oncology trials. *Nat Commun* 2026. doi:10.1038/s41467-026-68873-8 (NCT06561217)
 * Carlisle B et al. Unsuccessful trial accrual and human subjects protections. *Clin Trials* 2015, if you use the general-trials figure.
+* Ateya MB et al. The value of structured data elements from electronic health records for identifying subjects for primary care clinical trials. *BMC Med Inform Decis Mak* 2016;16:1.
+* EHR4CR / InSite feasibility study of 23 oncology protocols across 24 European hospitals (median 55% of criteria computable). Find the exact citation (2019) before presenting.
+* Thoracic oncology clinical trial eligibility criteria and requirements continue to increase in number and complexity. *J Thorac Oncol* 2017 (ECOG trials, median 17 → 28).
+* Eligibility-criteria growth and accrual failure in NCI-affiliated trials, *Cancer Medicine* (OR 1.09 per decile).
+* Artusi CA et al. Deep brain stimulation selection criteria for Parkinson's disease: time to go beyond CAPSIT-PD. *J Clin Med* 2020;9:3931.
+* MOH Singapore: NGEMR rollout status (NUHS and NHG completed July 2024; SingHealth 2026–28).
 * TRIPOD-LLM (Gallifant et al., *Nat Med* 2025) and DECIDE-AI (Vasey et al., *Nat Med* / *BMJ* 2022), the reporting guidelines.
