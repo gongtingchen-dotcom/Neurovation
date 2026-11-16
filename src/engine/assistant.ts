@@ -1,5 +1,5 @@
 import { TODAY, daysBetween } from './evaluators';
-import type { Patient, Protocol, Role, ScreeningResult, Stage } from './types';
+import type { ConsentRecord, Patient, Pipeline, Protocol, Role, ScreeningResult, Stage } from './types';
 
 /**
  * Grounded study assistant (prototype).
@@ -21,6 +21,7 @@ export interface AssistantContext {
   patients: Patient[];
   screening: ScreeningResult[];
   stageOf: (p: Patient) => Stage;
+  pipelineOf: (p: Patient) => Pipeline | undefined;
   role: Role;
 }
 
@@ -29,9 +30,8 @@ export const SUGGESTIONS = [
   'Who is overdue for a consent follow-up?',
   'Which criterion causes the most screen failures?',
   'How close are we to the enrolment target?',
-  'What is the MoCA cut-off in the protocol?',
+  'What is the cognitive (MoCA) cut-off in this protocol?',
   'Which criteria are most often unknown?',
-  'Why is PT-1015 ranked where it is?',
 ];
 
 const pct = (x: number) => `${Math.round(x * 100)}%`;
@@ -39,6 +39,7 @@ const pct = (x: number) => `${Math.round(x * 100)}%`;
 export function answer(q: string, ctx: AssistantContext): Answer {
   const s = q.toLowerCase();
   const { protocol, patients, screening, stageOf, role } = ctx;
+  const cons = (p: Patient): ConsentRecord => ctx.pipelineOf(p)?.consent ?? { formVersion: '—' };
   const crit = (id: string) => protocol.criteria.find((c) => c.id === id)!;
 
   // ---- scope guard: identity questions ----
@@ -71,12 +72,12 @@ export function answer(q: string, ctx: AssistantContext): Answer {
 
   // ---- one criterion short ----
   if (/one criterion|one short|almost|close to elig|nearly/.test(s)) {
-    const near = screening.filter((r) => r.notMet === 0 && r.unknown === 1 && r.results.find((x) => x.verdict === 'unknown')?.criterionId !== 'E5')
-      .concat(screening.filter((r) => r.notMet === 0 && r.unknown === 2 && r.results.some((x) => x.criterionId === 'E5' && x.verdict === 'unknown')))
-      .slice(0, 6);
+    const consentIds = new Set(protocol.criteria.filter((c) => c.evaluator === 'consentObtainable').map((c) => c.id));
+    const assessableUnknown = (r: ScreeningResult) => r.results.filter((x) => x.verdict === 'unknown' && !consentIds.has(x.criterionId));
+    const near = screening.filter((r) => r.notMet === 0 && assessableUnknown(r).length === 1).slice(0, 6);
     if (!near.length) return { text: 'No patient is exactly one assessable criterion short.', sources: ['Screening results'] };
     const counts: Record<string, number> = {};
-    near.forEach((r) => r.results.filter((x) => x.verdict === 'unknown' && x.criterionId !== 'E5').forEach((x) => (counts[x.criterionId] = (counts[x.criterionId] ?? 0) + 1)));
+    near.forEach((r) => assessableUnknown(r).forEach((x) => (counts[x.criterionId] = (counts[x.criterionId] ?? 0) + 1)));
     const top = Object.entries(counts).sort((a, b) => b[1] - a[1])[0];
     return {
       text: `${near.length} patients have no failed criterion and exactly one criterion still unknown from the records (consent aside). The most common gap is “${crit(top[0]).label}” (${top[1]} of ${near.length}). Highest-ranked: ${near[0].patientId}, score ${near[0].score.toFixed(2)}.`,
@@ -87,10 +88,10 @@ export function answer(q: string, ctx: AssistantContext): Answer {
 
   // ---- overdue consent ----
   if (/overdue|follow.?up|unsigned|consent/.test(s) && !/cut.?off|threshold/.test(s)) {
-    const overdue = patients.filter((p) => stageOf(p) === 'Approved for contact' && p.consent.invitedOn && !p.consent.signedOn && daysBetween(p.consent.invitedOn, TODAY) > 7);
+    const overdue = patients.filter((p) => stageOf(p) === 'Approved for contact' && cons(p).invitedOn && !cons(p).signedOn && daysBetween(cons(p).invitedOn!, TODAY) > 7);
     if (!overdue.length) return { text: 'No consent forms are overdue.', sources: ['Consent tracker'] };
     return {
-      text: `${overdue.length} patients have had an unsigned consent form for more than 7 days: ${overdue.map((p) => `${p.id} (${daysBetween(p.consent.invitedOn!, TODAY)} d, form ${p.consent.formVersion})`).join(', ')}.${overdue.some((p) => p.consent.formVersion !== 'v2.1') ? ' Some were sent the superseded v2.0 form and need re-consent on v2.1.' : ''}`,
+      text: `${overdue.length} patients have had an unsigned consent form for more than 7 days: ${overdue.map((p) => `${p.id} (${daysBetween(cons(p).invitedOn!, TODAY)} d, form ${cons(p).formVersion})`).join(', ')}.${overdue.some((p) => cons(p).formVersion !== 'v2.1') ? ' Some were sent the superseded v2.0 form and need re-consent on v2.1.' : ''}`,
       sources: ['Consent tracker', 'Consent form version register'],
       patientIds: overdue.map((p) => p.id),
     };
@@ -137,8 +138,11 @@ export function answer(q: string, ctx: AssistantContext): Answer {
         text: protocol.criteria.map((c) => `${c.kind === 'inclusion' ? 'Inclusion' : 'Exclusion'} ${c.section.split('(').pop()?.replace(')', '') ?? ''}: ${c.sourceText}`).join('\n'),
         sources: [protocol.citation],
       };
-    const c = protocol.criteria.find((c) =>
-      scale === 'moca' ? c.evaluator === 'mocaAbove' : scale === 'sas' ? c.evaluator === 'sasThreshold' : scale === 'months' ? c.evaluator === 'stnDbsDuration' : c.evaluator === 'notMostDorsalBilateral');
+    const want: Record<string, string[]> = {
+      moca: ['mocaAbove'], sas: ['sasThreshold'], levodopa: ['levodopaResponseAtLeast'], fog: ['fogAtLeast'], hy: ['hoehnYahrBetween'],
+      age: ['ageBetween', 'ageAtLeast'], months: ['stnDbsDuration', 'anyDbsDuration', 'diseaseDurationAtLeast'], dorsal: ['notMostDorsalBilateral'],
+    };
+    const c = protocol.criteria.find((c) => want[scale].includes(c.evaluator));
     if (!c) return { text: 'This protocol has no criterion on that.', sources: [protocol.citation] };
     return {
       text: `“${c.sourceText}”${c.params.length ? ` Current setting: ${c.params.map((p) => `${p.label.toLowerCase()} ${p.value}${p.unit ? ` ${p.unit}` : ''}`).join('; ')}.` : ''}${c.siteRule ? ` Site rule: ${c.siteRule}` : ''}`,
@@ -147,7 +151,7 @@ export function answer(q: string, ctx: AssistantContext): Answer {
   }
 
   return {
-    text: 'I can only answer from this protocol and the study database. Try asking about eligibility gaps, consent follow-ups, screen failures, enrolment progress, a protocol threshold, or a study ID such as PT-1015.',
+    text: 'I can only answer from this protocol and the study database. Try asking about eligibility gaps, consent follow-ups, screen failures, enrolment progress, a protocol threshold, or a study ID such as PT-1001.',
     sources: [],
   };
 }

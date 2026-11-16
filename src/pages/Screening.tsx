@@ -13,7 +13,7 @@ const SYSTEM_ICON: Record<string, string> = {
 };
 
 export function Screening() {
-  const { screening, protocol, byId, decisions, decide, stageOf, priors, role, audit, selectedId, setSelectedId } = useStore();
+  const { screening, protocol, protocols, portfolio, setProtocolId, byId, decisions, decide, stageOf, priors, role, audit, selectedId, setSelectedId } = useStore();
   const [filter, setFilter] = useState<Filter>('All');
   const [hideActioned, setHideActioned] = useState(true);
   const [tab, setTab] = useState<Tab>('eligibility');
@@ -37,6 +37,7 @@ export function Screening() {
   const patient = sel ? byId.get(sel.patientId) : undefined;
   const decision = sel ? decisions[`${protocol.id}:${sel.patientId}`] : undefined;
   const canApprove = role === 'Principal investigator';
+  const consentIds = new Set(protocol.criteria.filter((c) => c.evaluator === 'consentObtainable').map((c) => c.id));
 
   return (
     <>
@@ -77,7 +78,7 @@ export function Screening() {
                       <td><ScoreBar score={r.score} /></td>
                       <td><BandChip band={r.band} /></td>
                       <td><Tally r={r} /></td>
-                      <td className="nowrap">{d ? <DecisionChip action={d.action} /> : <span className="small">{nextStep(r)}</span>}</td>
+                      <td className="nowrap">{d ? <DecisionChip action={d.action} /> : <span className="small">{nextStep(r, consentIds)}</span>}</td>
                     </tr>
                   );
                 })}
@@ -133,6 +134,20 @@ export function Screening() {
                   })}
                 </>
               )}
+              {tab === 'eligibility' && (
+                <div style={{ borderTop: '1px solid var(--border)' }}>
+                  <div style={{ padding: '14px 20px 6px' }} className="strong small">Other trials for this patient</div>
+                  {protocols.filter((pr) => pr.id !== protocol.id).map((pr) => {
+                    const o = portfolio[pr.id].get(sel.patientId)!;
+                    return (
+                      <button key={pr.id} className="list-row" onClick={() => setProtocolId(pr.id)}>
+                        <span><span className="small">{pr.shortName}</span><div className="tiny muted">{o.met} met · {o.notMet} not met · {o.unknown} unknown</div></span>
+                        <span className="row"><span className="mono small">{o.score.toFixed(2)}</span><BandChip band={o.band} /></span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
               {tab === 'sources' && <Sources patient={patient} protocol={protocol} />}
               {tab === 'activity' && (
                 <div>
@@ -178,7 +193,7 @@ function Sources({ patient, protocol }: { patient: Patient; protocol: Protocol }
         <div className="callout">
           <Icon name="info" />
           <span>
-            To pre-screen this patient by hand, a coordinator searches <b>{recordSize(patient)} documents</b> to find the <b>{docs.length}</b> that matter. These sit in <b>{systems.size} separate systems</b>, and most are free text or scanned PDFs that the EMR search cannot query.
+            To pre-screen this patient by hand, a coordinator searches <b>{recordSize(patient)} documents</b> to find the <b>{docs.length}</b> that matter. These sit in <b>{systems.size} separate systems</b>, and most are free text or scanned PDFs that the electronic medical record (EMR) search cannot query.
             {missing > 0 && <> {missing} required item{missing > 1 ? 's were' : ' was'} not found anywhere.</>}
           </span>
         </div>
@@ -221,9 +236,9 @@ function DecisionChip({ action }: { action: string }) {
   const cls = action === 'approve' ? 'met' : action === 'reject' ? 'notmet' : 'unknown';
   return <span className={`chip ${cls}`}><span className="dot" />{labelFor(action)}</span>;
 }
-function nextStep(r: ScreeningResult) {
+function nextStep(r: ScreeningResult, consentIds: Set<string>) {
   if (r.notMet > 0) return 'Confirm exclusion';
-  const assessable = r.results.filter((x) => x.verdict === 'unknown' && x.criterionId !== 'E5').length;
+  const assessable = r.results.filter((x) => x.verdict === 'unknown' && !consentIds.has(x.criterionId)).length;
   if (assessable === 0) return 'Ready for PI review';
   return `Resolve ${assessable} unknown`;
 }

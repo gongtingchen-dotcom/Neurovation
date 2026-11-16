@@ -97,7 +97,7 @@ export function Validation() {
               {agreement.map(({ c, unknown, agreement, known }) => (
                 <tr key={c.id}>
                   <td><span className="mono faint" style={{ marginRight: 6 }}>{c.id}</span><span className="strong">{c.label}</span></td>
-                  <td><span className="chip ink">{c.evidenceSource}</span></td>
+                  <td><span className="chip ink">{c.evidenceSource === 'EHR' ? 'Health record (EHR)' : c.evidenceSource}</span></td>
                   <td className="num"><span className={unknown > 0.2 ? 'chip unknown' : ''}>{pct(unknown)}</span></td>
                   <td className="num">{pct(agreement)} <span className="faint tiny">n={known}</span></td>
                 </tr>

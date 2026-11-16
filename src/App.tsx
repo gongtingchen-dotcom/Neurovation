@@ -7,6 +7,7 @@ import { Dashboard } from './pages/Dashboard';
 import { Participants } from './pages/Participants';
 import { ProtocolPage } from './pages/Protocol';
 import { Screening } from './pages/Screening';
+import { Trials } from './pages/Trials';
 import { Validation } from './pages/Validation';
 import { StoreProvider, useStore } from './state/store';
 
@@ -17,7 +18,7 @@ const ROLES: { role: Role; initials: string; name: string }[] = [
 ];
 
 function useHashPage() {
-  const read = () => window.location.hash.replace('#/', '') || 'overview';
+  const read = () => window.location.hash.replace('#/', '') || 'trials';
   const [page, setPage] = useState(read);
   useEffect(() => {
     const on = () => setPage(read());
@@ -34,10 +35,12 @@ function Shell() {
   const me = ROLES.find((r) => r.role === role)!;
   const enrolled = patients.filter((p) => stageOf(p) === 'Enrolled').length;
   const queue = screening.filter((r) => r.score > 0 && !decisions[`${protocol.id}:${r.patientId}`] && stageOf(patients.find((p) => p.id === r.patientId)!) === 'Pre-screened').length;
-  const recruiting = protocol.id === 'dstn-apathy';
+  const recruiting = protocol.status === 'Recruiting';
 
   const nav: ({ group: string } | { id: string; label: string; icon: string; count?: number })[] = [
-    { group: 'Study' },
+    { group: 'Research unit' },
+    { id: 'trials', label: 'Trial portfolio', icon: 'database', count: protocols.length },
+    { group: 'This trial' },
     { id: 'overview', label: 'Overview', icon: 'dashboard' },
     { id: 'protocol', label: 'Eligibility criteria', icon: 'protocol', count: protocol.criteria.filter((c) => c.enabled).length },
     { id: 'screening', label: 'Pre-screening', icon: 'screen', count: queue },
@@ -60,7 +63,7 @@ function Shell() {
         <div className="side-top">
           <div className="brand"><Logo /><span className="brand-name">Neurovation</span><span className="env-tag">SANDBOX</span></div>
           <div className="study-switch">
-            <div className="label">Study</div>
+            <div className="label">Trial</div>
             <div className="name">{protocol.shortName}</div>
             <div className="meta"><span className={`status-dot ${recruiting ? '' : 'idle'}`} />{recruiting ? `Recruiting · ${enrolled}/${protocol.targetEnrolment}` : 'Feasibility'}</div>
             <span className="chev"><Icon name="chevrons" size={14} /></span>
@@ -98,6 +101,7 @@ function Shell() {
       </aside>
       <div className="main">
         <main className="page">
+          {page === 'trials' && <Trials go={go} />}
           {page === 'overview' && <Dashboard go={go} />}
           {page === 'protocol' && <ProtocolPage />}
           {page === 'screening' && <Screening />}

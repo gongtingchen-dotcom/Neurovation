@@ -1,19 +1,20 @@
 # Neurovation
 
-**A clinician-in-the-loop recruitment co-pilot for neuromodulation and device trials.**
+**A clinician-in-the-loop recruitment platform for Parkinson's disease neuromodulation trials (deep brain stimulation, spinal cord stimulation): motor and non-motor.**
 Research prototype for the A\*STAR Innovation Challenge 2026. Synthetic data only. Not for clinical use.
 
-![Screening queue](docs/screenshots/screening.png)
+![Pre-screening queue](docs/screenshots/screening.png)
 
 Neurovation turns a trial protocol into a structured eligibility checklist. It screens patient records against that checklist with **three-state verdicts (met / not met / unknown)**, each backed by a quoted source sentence. Patients are ranked by the probability that they meet every criterion. A named clinician approves every contact. The same database drives eConsent tracking, a pseudonymised participant register, a live dashboard and a grounded study assistant.
 
 | Module | What it shows in the prototype |
 |---|---|
-| **Protocol & criteria** | The real, CC BY 4.0 protocol of Zoon et al. 2024 (dorsal STN-DBS for apathy in PD), encoded as editable rules with their source sentences, evidence source and data-freshness windows. Also a draft-criteria extractor for pasted protocol text. |
-| **Pre-screening** | 220 synthetic DBS patients ranked by P(eligible). Each criterion shows its evidence quote, and the score breaks down into its terms. A *Source documents* tab shows how many documents, across how many systems, a coordinator would have to search by hand. Approve, request information or reject; every action is logged. |
-| **Participants & consent** | eConsent status, form version control, comprehension check and survey completion. A role-gated identity vault. |
-| **Study assistant** | Staff-facing Q&A that answers only from the protocol and the database, cites sources and refuses identity questions. |
-| **Validation** | In-silico shadow mode: recall, precision (Wilson 95% CI), share of charts to review, average precision, criterion-level unknown rates and a coordinator-time model. |
+| **Trial portfolio** | Four Parkinson's disease (PD) trials screened at once: adaptive deep brain stimulation (DBS) for motor fluctuations, early subthalamic DBS for motor complications (modelled on EARLYSTIM), spinal cord stimulation for freezing of gait, and dorsal subthalamic DBS for apathy (the real Zoon et al. 2024 protocol, CC BY 4.0). Each patient's matches across trials, plus an abbreviation glossary. |
+| **Eligibility criteria** | Each protocol as editable rules with their source sentences, evidence source and data-freshness windows, plus a draft-criteria extractor for pasted protocol text. |
+| **Pre-screening** | 420 synthetic patients ranked by the probability of being eligible. Each criterion shows its evidence quote and the score breaks down into its terms. A *Source documents* tab shows how many documents, across how many systems, a coordinator would have to search by hand. Approve, request information or reject; every action is logged. |
+| **Participants & consent** | Electronic consent status, form version control, comprehension check, survey completion, and a role-gated identity vault. |
+| **Study assistant** | Staff-facing questions answered only from the protocol and the database, with sources cited and identity questions refused by role. |
+| **Validation** | In-silico shadow mode: recall, precision (Wilson 95% confidence intervals), share of charts to read, average precision, criterion-level unknown rates and a coordinator-time model. |
 | **Audit trail** | Append-only log of every edit, decision, vault access and assistant query, with CSV export. |
 
 ---
@@ -101,12 +102,13 @@ For the challenge, **GitHub Pages is enough**. It is free, and the app makes no 
 ```
 src/
   data/
-    protocols.ts     Zoon et al. 2024 protocol (real, CC BY) + one illustrative adaptive-DBS protocol
-    cohort.ts        Seeded synthetic cohort: ground truth vs what is documented (missing / stale)
+    protocols.ts     Four PD trials: 3 motor (adaptive DBS, early DBS, spinal cord stimulation) + apathy (Zoon et al. 2024, real)
+    sources.ts       Which hospital system each kind of evidence lives in; record size per patient
+    cohort.ts        Seeded synthetic cohort (n = 420): ground truth vs what is documented (missing / stale)
   engine/
     types.ts         Data model
     evaluators.ts    One transparent rule per criterion type → met / not met / unknown + evidence
-    matcher.ts       Scoring: P(eligible) = Π priors of unknown criteria; empirical priors
+    matcher.ts       Scoring: P(eligible) = product of priors of unknown criteria; conditional empirical priors
     extract.ts       Protocol text → draft criteria (offline heuristic; LLM in production)
     metrics.ts       Recall/precision sweep, Wilson CI, average precision
     assistant.ts     Grounded intent-based study assistant with role scoping

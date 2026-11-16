@@ -22,7 +22,7 @@ Patient records ──▶ [2] Evidence extraction (LLM span extraction) ──�
 | 1. Criteria extraction | Offline regex heuristic (`engine/extract.ts`) | LLM with a fixed JSON schema (criterion, kind, field, operator, threshold, unit, recency window, source sentence). Two-pass self-consistency; a person reviews every draft |
 | 2. Evidence extraction | Pre-structured synthetic facts with quotes | LLM span extraction per criterion. **The returned quote must string-match the source document, or the verdict is forced to "unknown"**, which blocks hallucinated evidence |
 | 3. Rule evaluation | `engine/evaluators.ts` | Same code. Rules stay deterministic, versioned and unit-tested |
-| 4. Ranking | Product of empirical priors (Laplace-smoothed) | Same, with priors re-estimated per site; calibration checked in shadow mode |
+| 4. Ranking | Product of conditional empirical priors (estimated among patients who fail no other criterion; Laplace-smoothed) | Same, with priors re-estimated per site; calibration checked in shadow mode |
 | 5. Review | Role switcher, decisions, audit | Hospital SSO, roles from the study delegation log |
 | 6. Assistant | Intent matching over database queries | LLM with tool calls to the same query functions, so numbers always come from queries. Retrieval scoped by role |
 

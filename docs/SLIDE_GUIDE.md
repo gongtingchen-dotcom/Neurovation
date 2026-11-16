@@ -1,414 +1,475 @@
-# Neurovation: slide guide for a scientific presentation
+# Neurovation: slide guide (version 3)
 
-**Audience:** senior scientists and clinician-scientists at A\*STAR. **Register:** a research proposal with a working prototype, not a pitch.
-**Target length:** 15 main slides (plus optional slide 3C) and a backup section, about 15 minutes plus Q&A.
+**Audience:** senior scientists and clinician-scientists at A\*STAR (Agency for Science, Technology and Research).
+**Register:** scientific and engineering: problem, mechanism, evidence. Not a sales pitch.
+**Structure (as requested):** 1 Title → 2 The problem → 3 Platform overview → 4 Module by module → 5 Conclusion.
+**Length:** about 15 slides plus backups, 15–18 minutes.
 
----
-
-## 0. The reframe in one paragraph
-
-The current draft reads as a product pitch: problem, solution, modules, competitors, ask. A scientific audience needs a **research question, a method, a falsifiable hypothesis, preliminary data, a validation design and limitations.** Keep almost all your content, but reorganise it around this question:
-
-> **Can a clinician-in-the-loop LLM pipeline, with three-state, evidence-linked eligibility verdicts, find ≥ 95% of eligible patients for a neuromodulation trial while cutting coordinator pre-screening time by ≥ 50%?**
-
-Three things make this scientifically interesting rather than "another AI matcher". Lead with them:
-
-1. **Neuromodulation criteria are structurally different.** They depend on device state (active contact, IPG sensing capability), time since surgery, and *recent* scale scores (SAS, MoCA). That evidence sits in programming reports and neuropsychology letters, not structured EHR fields. All the published LLM-screening evidence is from oncology and cardiology.
-2. **"Unknown" is a first-class outcome.** Missing or stale evidence is not "not met". Treating it as a third state, and ranking by the probability of eligibility, is a methods contribution you can test.
-3. **The LLM reads, rules decide, people approve.** That split makes every decision auditable and lets you measure extraction errors and rule errors separately.
-
-### Running thread
-
-Use **one real protocol** all the way through: Zoon et al., *Trials* 2024, dorsal STN-DBS for apathy in PD (CC BY 4.0). Every method slide shows its criteria. Delete the current slide 2 (the "Database – DBS trials" notes) and fold its content into slides 3C and 7.
-
-### Visual language for the deck
-
-The deck should match the prototype so they read as one body of work:
-
-* Near-black `#101828` for titles, grey `#475467` for body, one blue accent `#2A56C6`, white slides with light-grey `#F8F9FB` panels. Navy `#0F2742` for the title and closing slides.
-* Status colours used **only** for verdicts: met `#067647`, not met `#B42318`, unknown `#B54708`. Always with a word or icon as well as colour.
-* Sentence-case **assertion titles**. The title states the finding: not "Results", but "In simulation, ranking finds every eligible patient after reviewing 21% of charts".
-* A small grey "Synthetic data" tag in the corner of every slide that shows simulated numbers.
-* Citations as short footers (Author, Journal Year) in 10–11 pt grey.
+> **Abbreviation rule.** Every abbreviation is spelled out the first time it appears in this guide, and again the first time it appears on each slide. On the slides, write the full term first, then the abbreviation in brackets: "deep brain stimulation (DBS)". The glossary below is also worth a backup slide.
 
 ---
 
-## Slide-by-slide
+## Glossary
 
-### Slide 1: Title
+| Abbreviation | Full name | What it means here |
+|---|---|---|
+| PD | Parkinson's disease | The condition all four trials study |
+| DBS | Deep brain stimulation | Implanted electrodes that deliver electrical pulses to deep brain targets |
+| aDBS | Adaptive deep brain stimulation | DBS that adjusts itself in real time from the brain's own signals ("closed loop") |
+| STN | Subthalamic nucleus | The most common DBS target in PD |
+| GPi | Globus pallidus internus | The other common DBS target |
+| IPG | Implantable pulse generator | The battery and stimulator unit of a DBS system |
+| LFP | Local field potential | The brain signal a "sensing" IPG records, which aDBS uses |
+| SCS | Spinal cord stimulation | Electrodes over the spinal cord, being tested for gait problems |
+| FOG | Freezing of gait | Sudden, brief inability to step forward ("feet glued to the floor") |
+| NFOG-Q | New Freezing of Gait Questionnaire | Freezing severity score, 0–28 |
+| MDS-UPDRS | Movement Disorder Society–Unified Parkinson's Disease Rating Scale | Standard PD rating scale; part III is the motor examination |
+| H&Y | Hoehn and Yahr stage | PD severity stage from 1 (one side) to 5 (wheelchair or bed-bound) |
+| ON / OFF | Medication ON / OFF state | ON = medication working well; OFF = medication worn off, symptoms return |
+| MoCA | Montreal Cognitive Assessment | Cognitive screening test, 0–30 |
+| SAS | Starkstein Apathy Scale | Apathy questionnaire, 0–42 |
+| CAPSIT-PD | Core Assessment Program for Surgical Interventional Therapies in PD | The classic DBS candidate-selection guideline (1999) |
+| EHR / EMR | Electronic health record / electronic medical record | The hospital's patient record system |
+| NGEMR | Next Generation Electronic Medical Record | Singapore's shared public-sector EMR programme |
+| LLM | Large language model | The AI model type that reads free text (e.g. the model family behind ChatGPT and Claude) |
+| JSON | JavaScript Object Notation | A structured text format that software can read |
+| PI | Principal investigator | The doctor responsible for the trial |
+| IRB | Institutional review board | The ethics committee that approves studies |
+| HBRA | Human Biomedical Research Act (Singapore) | The law governing human biomedical research |
+| PDPA | Personal Data Protection Act (Singapore) | The data-protection law |
+| RCT | Randomised controlled trial | — |
+| CI | Confidence interval | The range the true value plausibly lies in (we use 95%) |
+| PPV | Positive predictive value (precision) | Of the patients the tool flags, the share who are truly eligible |
+| PR-AUC | Area under the precision–recall curve | One-number summary of ranking quality; 1.0 is perfect |
+
+---
+
+## Visual language
+
+Match the deck to the prototype so they read as one body of work:
+* White slides, near-black titles `#101828`, grey body text `#475467`, one blue accent `#2A56C6`. Use navy `#0F2742` as the background for the title and closing slides only.
+* Status colours only for status: met = green `#067647`, not met = red `#B42318`, unknown = amber `#B54708`. Always pair the colour with a word.
+* **Assertion titles**: each title states the slide's message. For example, not "The problem" but "One in five deep brain stimulation trials fails, most often because it cannot find patients".
+* Put a grey "Synthetic data" tag on every slide that shows simulated numbers.
+* Short citations in 10–11 pt grey at the bottom of the slide.
+* Screenshots are in `docs/screenshots/` at 2× resolution. Crop them and add numbered callouts (1, 2, 3) rather than arrows everywhere.
+
+---
+
+# PART 1: TITLE
+
+## Slide 1: Title
 
 **On the slide**
-* Title: **Neurovation: clinician-in-the-loop LLM pre-screening for neuromodulation trial recruitment**
-* Subtitle: *A three-state, evidence-linked eligibility pipeline, with a working prototype and in-silico validation*
-* Team names, affiliation, "A\*STAR Innovation Challenge 2026".
-* Visual: a cropped screenshot of the screening queue's evidence panel (`docs/screenshots/screening.png`, right-hand side), faded to the right edge.
+* Title: **Neurovation: an AI-assisted platform for finding, consenting and tracking participants in Parkinson's disease neuromodulation trials**
+* Subtitle: *Turning eligibility screening from hours of chart reading into minutes of evidence review, with a clinician deciding every step*
+* Team: Ting Chen Gong, Kezia Susanto, Thaddeus, Jasiel · A\*STAR (Agency for Science, Technology and Research) Innovation Challenge 2026
+* Visual: a cropped screenshot of the patient record panel (`screening.png`, right-hand side), faded at the edge.
 
 **Speaker notes**
-* One line on who we are and why neuromodulation (team background).
-* The question for today: can AI pre-screening work for trials where the eligibility evidence lives in device reports and neuropsychology letters?
-* Roadmap: the problem, why neuromodulation is different, our method, simulation results, how we will validate it, and limits.
+* "Neuromodulation" means treating the nervous system with electrical stimulation, such as deep brain stimulation (DBS) or spinal cord stimulation (SCS).
+* Today: why finding patients for these trials is so hard; what we built; how each part works; and how we'll test it.
+* The platform covers motor-symptom trials (fluctuations, early complications, freezing of gait) and non-motor trials (apathy) for Parkinson's disease (PD).
 
 ---
 
-### Slide 2: Recruitment, not efficacy, is a leading reason neuromodulation trials fail
+# PART 2: THE PROBLEM
 
-**On the slide**
-* Left, large stat: **~1 in 5** registered DBS trials on ClinicalTrials.gov were unsuccessful, and **patient recruitment was the most common reason** (Mishra et al., *World Neurosurg X* 2024; n = 325 trials, 20.3% unsuccessful).
-* Middle stat: **45–60 min** of manual chart review per patient pre-screened (Callies et al. 2025, citing usual practice).
-* Right: a small "anatomy of a terminated trial" panel with two real registry examples of DBS trials stopped at **n = 1** for lack of enrolment (awake vs asleep DBS in PD, NCT02401308; DBS for tardive dyskinesia/dystonia, NCT02524886). *Check both on ClinicalTrials.gov before presenting.*
-* Bottom line: "Every eligible patient we miss is one fewer in a trial that may already be underpowered."
+The goal of Part 2 is that by its end the audience thinks: "Of course this is slow by hand, and of course a tool should help." Four slides, building in order: **trials fail → screening is a big task → doing it by hand is hard → others have shown AI helps, but not in our field.**
 
-**Replace** the Tufts "80%" number (it is a secondary source of a secondary source). If you want a general-trials figure, Carlisle et al., *Clinical Trials* 2015 reported that about 1 in 5 closed trials stopped early for poor accrual or finished with < 85% of planned enrolment. Verify the exact wording first.
+## Slide 2.1: One in five deep brain stimulation trials fails, and the most common reason is that it cannot recruit
+
+**On the slide:** three numbers in a row, each with a one-line label and a small citation.
+
+| Number | Label | Source |
+|---|---|---|
+| **20%** | of 325 deep brain stimulation (DBS) trials registered on ClinicalTrials.gov were unsuccessful. **Patient recruitment was the most common reason.** | Mishra et al., *World Neurosurgery: X* 2024 |
+| **~1 in 5** | trials across medicine close early or under-enrolled because they cannot accrue enough patients | Carlisle et al., *Clinical Trials* 2015 (check the exact wording) |
+| **n = 1** | Two real DBS trials (awake vs asleep surgery in Parkinson's disease (PD); DBS for tardive dyskinesia) stopped with **one** participant each, "lack of enrolment" | ClinicalTrials.gov NCT02401308, NCT02524886 (check both) |
+
+* Bottom line: "Neuromodulation trials are small (often 20–40 people), so every eligible patient who is missed matters."
+* Optional small chart: eligibility criteria per trial have grown over time; in lung-cancer drug trials, the median count rose from **17 to 28** between 1986–95 and 2006–16. More criteria were also linked to accrual failure (*Cancer Medicine*: odds ratio 1.09 per decile of criteria length).
 
 **Speaker notes**
-* The DBS analysis is the most relevant evidence: same device class, same registry.
-* Note that a revised version of the analysis (n = 242 interventional trials) gives 78.1% successful and the same top reasons, so the finding holds.
-* Neuromodulation trials are small (Zoon et al. plan n = 26), so each missed patient matters.
-* Pause on the n = 1 examples: these were not failures of the science; the trials could not find their patients.
+* "A trial that cannot recruit cannot answer its question, however good the science."
+* The DBS figure is the most relevant: same device class, same registry. A revised analysis (242 interventional trials) gives the same picture: about 78% successful, with recruitment the top reason for failure.
+* The n = 1 examples show it is not the science that failed. The trial never found its patients.
+* Protocols are getting longer: more criteria means more to check per patient, and that is linked to failing to recruit.
 
 ---
 
-### Slide 3A: Before contacting one patient, a coordinator must verify 15–30 facts from the record
+## Slide 2.2: Before one patient can be approached, someone must check 15–30 facts in their record
 
-**This slide answers "what do clinicians actually check?"** Use it to make the workload concrete before you mention AI.
+**This slide answers "what do clinicians actually check?"**
 
-**On the slide:** a checklist table of what a typical DBS / neuromodulation trial asks for. These are the standard categories; a given protocol picks a subset and sets its own thresholds.
+**On the slide:** a checklist table for a typical Parkinson's disease (PD) **motor** neuromodulation trial. Bold the cells that are not simple database fields; that is most of them, and that is the point.
 
-| Category | Typical criteria | Typical threshold or example | Where it is written down |
+| What is checked | Example criterion (from the trials in our prototype) | Where it is written down |
+|---|---|---|
+| **Diagnosis** | Idiopathic Parkinson's disease, not atypical parkinsonism | **Neurology clinic letters (free text)** |
+| **Age** | 18–60 years (early-stimulation trial); 40–80 years (gait trial) | Registration system (a field) |
+| **Disease duration** | Diagnosed ≥ 4 years ago | **Clinic letters** |
+| **Levodopa response** | ≥ 50% improvement in the Movement Disorder Society–Unified Parkinson's Disease Rating Scale (MDS-UPDRS) part III motor score on levodopa | **Levodopa challenge report** (often done only during surgical work-up) |
+| **Motor fluctuations** | ≥ 2 hours a day in the medication-OFF state | **Paper motor diary** (rarely scanned into the record) |
+| **Motor complications** | Fluctuations or dyskinesia for ≤ 3 years | **Clinic letters ("wearing-off since 2024")** |
+| **Disease stage** | Hoehn and Yahr (H&Y) stage ≤ 2.5 in best ON, or 2.5–4 for the gait trial | **Clinic letters** |
+| **Freezing of gait** | ≥ 1 freezing episode a day (New Freezing of Gait Questionnaire, NFOG-Q, items 1–2) | **Clinic letters ("freezes at doorways")** |
+| **Cognition** | Montreal Cognitive Assessment (MoCA) above a cut-off, **and recent** | **Neuropsychology report, often a scanned PDF** |
+| **Mood** | No moderate–severe depression or suicidality | **Psychiatry letters** |
+| **Medication stability** | No dose change in the last 30 days | Prescribing record (dates must be compared) |
+| **Device** | Has deep brain stimulation (DBS) or not; target; time since implant; implantable pulse generator (IPG) model with sensing | **Operative note; DBS programming report in the manufacturer's tablet or portal** |
+| **Practical** | Language, ability to attend visits, willingness to consent | **Only by talking to the patient** |
+
+* Corner callout: **1.6%**: the share of people with PD who meet the classic strict surgical-selection criteria (CAPSIT-PD, the Core Assessment Program for Surgical Interventional Therapies in PD); 4.5% with flexible criteria (Artusi et al., *Journal of Clinical Medicine* 2020). The eligible pool is tiny, so many must be screened to find a few.
+
+**Speaker notes**
+* "This is what screening means in practice. For each patient, a research coordinator has to confirm every row, and most rows have a threshold, and many a date."
+* Walk through two rows. Levodopa response: you need the actual challenge-test report, and it usually exists only for patients already worked up for surgery. Motor fluctuations: the protocol asks for OFF hours from a diary that lives on paper in the patient's bag.
+* Neuromodulation adds device rows (which electrode contact is active, can the battery sense brain signals) that sit in the manufacturer's system, not the hospital record.
+
+---
+
+## Slide 2.3: The hospital has the data, but not as answers anyone can search
+
+**This is the key slide. It answers "don't hospitals already have all the data?"** Yes. But having the data is not the same as having the answers. It is like a library with every book and no index.
+
+**On the slide:** left half, six reasons (icon + bold phrase + one line). Right half, the prototype's "Source documents" view for one patient (`screening-sources.png`): **125 documents → the 5 that matter, spread across 5 systems, 1 required fact not recorded anywhere.**
+
+1. **Written, not coded.** Only part of a trial's criteria can be computed from structured database fields: a median of **55%** per protocol (range 38–89%) across 23 trials in 24 European hospitals (the EHR4CR/InSite feasibility study; EHR = electronic health record). An expert rating put primary-care criteria at **74%**, an optimistic upper bound (Ateya et al., *BMC Medical Informatics and Decision Making* 2016). The rest are sentences: "MoCA 24/30", "freezes at doorways about three times a day", "no haemorrhage on post-op CT".
+2. **Scattered across systems.** Clinic notes in the electronic medical record (EMR); neuropsychology reports as scanned PDFs; DBS settings in the manufacturer's programmer; paper motor diaries; letters from other hospitals. In Singapore, the Next Generation Electronic Medical Record (NGEMR) went live across NUHS (National University Health System) and NHG (National Healthcare Group) in July 2024; SingHealth follows by 2026–28. Patients seen across clusters may still have records in two systems.
+3. **Goes out of date.** "MoCA above 25" means a *recent* MoCA. Someone has to find the latest score and check its date; a two-year-old score may no longer be true.
+4. **Needs interpretation.** Negation ("no permanent deficit"), uncertainty ("probable PD"), notes that contradict each other, and idiopathic vs atypical parkinsonism all need reading, not keyword search.
+5. **Hospital search tools count codes, not criteria.** A diagnosis-code search returns "everyone coded with PD". It cannot say whose MoCA was 26 this year, who has had wearing-off for under 3 years, or whose stimulator can sense brain signals. Feasibility tools such as TriNetX give cohort counts, not patient-level answers with evidence.
+6. **So it is slow, and it is repeated for every trial.** Manual pre-screening takes **45–60 minutes per patient** (Callies et al. 2025). In our synthetic clinic: 420 patients × about 193 documents ≈ **81,000 documents**, roughly **370 coordinator-hours to pre-screen everyone once for one trial**, to find 17–54 eligible patients depending on the trial.
+
+**Speaker notes**
+* Ask the question the audience is thinking: "Doesn't the hospital already have all this?"
+* "Yes, the information exists. But it is written in sentences, spread over five or more systems, and some of it goes stale. The record can find patients with a PD code; it cannot tell you whose OFF time is over two hours."
+* Point at the screenshot: one patient, 125 documents, 5 that matter, in 5 different places, and one fact that is missing entirely. A coordinator does this by hand for every patient, for every trial.
+* Pre-empt "why not add more structured fields?" That helps in the long run, but it takes years of workflow change and still won't cover outside letters, scanned reports or device data.
+* This is exactly what language models are good at: reading sentences and pointing to where the answer is. The decision stays with people.
+
+---
+
+## Slide 2.4: In oncology and cardiology, AI pre-screening already finds more eligible patients, faster
+
+User request: "similar things have been done in oncology; how have they improved success rate?" Be precise: the evidence shows **faster screening and more patients identified and enrolled**. No study yet shows higher trial *completion* rates. Say that honestly; it is a strength.
+
+**On the slide:** an evidence table (keep the "Limitation" column; scientists will look for it).
+
+| Study | Field · design | What improved | Limitation |
 |---|---|---|---|
-| Diagnosis and stage | Idiopathic PD (MDS criteria), disease duration, Hoehn & Yahr stage | ≥ 5 years' duration (CAPSIT-PD) | Neurology clinic letters |
-| Treatment response | Levodopa challenge | ≥ 33% improvement in UPDRS-III, OFF vs best ON (CAPSIT-PD) | Formal challenge report or clinic note |
-| Motor severity | MDS-UPDRS III OFF medication; daily OFF time; dyskinesia | e.g. ≥ 2 h/day OFF on a 3-day diary | Clinic notes; **paper motor diaries** |
-| Cognition | MoCA, MMSE or Mattis DRS, **with a date** | e.g. exclude MoCA ≤ 25 (Zoon et al.) | **Neuropsychology report, often a scanned PDF** |
-| Mood and behaviour | Depression (BDI, MADRS), suicidality (C-SSRS), psychosis, impulse control | Exclude active suicidality or psychosis | Psychiatry letters |
-| Device and surgery | Target (STN or GPi), time since implant, lead position, **active contacts**, IPG model (sensing? MRI-conditional?) | ≥ 3 months of STN DBS; not on the most dorsal contact | Operative note, post-op imaging, **DBS programming report (vendor tablet or portal)** |
-| Imaging | MRI contraindications, atrophy, vascular lesions | Exclude significant atrophy | Radiology reports |
-| Medical safety | Anticoagulants, bleeding risk, comorbidities, pregnancy | — | Medication list, labs |
-| Medication stability | Stable PD medication (LEDD) | Unchanged ≥ 4 weeks | Prescribing record |
-| Practical | Age, language, can attend visits, caregiver, capacity to consent, not in another trial | — | Registration, social notes, **only at interview** |
+| Unlu et al., *JAMA* 2025 (the RECTIFIER tool) | Cardiology (heart failure) · **randomised controlled trial (RCT)**, n = 4,476 | Eligible patients identified: **458 vs 284**; enrolled: **35 vs 19** (AI vs manual) | Single centre, single trial |
+| Mayo Clinic with IBM Watson, 2018 | Oncology (breast cancer) · before/after, institutional report | **+80% enrolment** in systemic-therapy trials over 11 months | Not peer-reviewed; vendor-linked; early drop in use until the workflow was redesigned |
+| Jin et al., *Nature Communications* 2024 (TrialGPT) | Mixed · retrospective, synthetic patients; small user study | **87.3%** criterion-level accuracy (experts 88.7–90.0%); **42.6%** less screening time | Synthetic patients; 2 clinicians in user study |
+| Callies et al., arXiv 2025 (Inato) | Oncology and other · real-world, 485 patients, 36 trials | **< 9 min vs 45–60 min** per patient; 87% accuracy | Preprint; company-authored |
+| Parikh et al., *Nature Communications* 2026 | Oncology · randomised, human vs human + AI | Accuracy **76% vs 71%**; but staff did **worse when the AI was badly wrong** (automation bias) | Retrospective records; single centre |
 
-* Bold the cells that are not structured fields. That is most of them, which is the point.
-* Two numbers in the corner:
-  * **17 → 28**: median eligibility criteria per lung-cancer drug trial, 1986–95 vs 2006–16 (*J Thorac Oncol* 2017, ECOG trials). More criteria were linked to accrual failure in NCI trials (OR 1.09 per decile of criteria length, *Cancer Medicine*).
-  * **1.6%**: share of people with PD who meet strict CAPSIT-PD DBS criteria (4.5% with flexible criteria; Artusi et al., *J Clin Med* 2020). The eligible pool is tiny, so you must screen many to find a few.
+* Callout: **"The gap: none of this evidence is from neuromodulation or device trials, where key facts sit in device reports and recent scale scores, and none covers the whole path from screening to consent."**
+* Aim statement (a single line at the bottom): **"We built and are validating a platform that finds every eligible patient for a neuromodulation trial while cutting the charts a human must read by more than 75%."**
 
 **Speaker notes**
-* "Here is what 'screening' means in practice. For each patient, someone has to confirm every row of this table, and every row has a threshold and often a date."
-* Walk through two rows: cognition (find the latest MoCA, check its date, check the cut-off direction) and device (find which contact is active, usually in the programming report, not the EMR).
-* The neuromodulation-specific rows (device state, recent scale scores, diaries) are what make our setting harder than the oncology and cardiology settings where AI screening has been tested.
-* The pool is small, so missing even one eligible patient matters.
-
----
-
-### Slide 3B: The hospital has the data, but not as answers anyone can query
-
-**This slide answers "don't hospitals already have all the data?"** Yes. But having the data is not the same as having the answers. It is like a library with every book and no index.
-
-**On the slide:** six short reasons, each with a small icon. On the right, the prototype's "Source documents" view (`docs/screenshots/screening-sources.png`), showing one patient: **311 documents → 6 relevant, across 5 systems.**
-
-1. **It is written, not coded.** Only part of the eligibility criteria can be computed from structured EHR fields: a median **55%** (range 38–89%) per protocol across 23 trials and 24 European hospitals (EHR4CR / InSite feasibility study). An expert rating of primary-care criteria put it at **74%**, an optimistic upper bound (Ateya et al., *BMC Med Inform Decis Mak* 2016). The rest are sentences: "SAS 17/42", "no haemorrhage on post-op CT", "active contacts L2 / R10".
-2. **It is scattered.** Notes in the EMR; neuropsychology as scanned PDFs; DBS settings in the manufacturer's programmer or portal; paper motor diaries; referral letters from other hospitals. In Singapore, the NGEMR (Epic) rollout finished at NUHS and NHG in July 2024 and SingHealth is scheduled for 2026–28, so a patient seen across clusters may still have records in two systems.
-3. **It goes out of date.** "MoCA > 25" means a *recent* MoCA. The coordinator must find the latest score and check its date; an old score may no longer be true.
-4. **It needs interpretation.** Negation ("no permanent deficit"), hedging ("probable PD"), contradictions between notes, and idiopathic vs atypical parkinsonism.
-5. **EMR search counts codes, not criteria.** A query for the PD diagnosis code returns a list. It cannot say which patients have a MoCA above 25 from this year, or which contact is active. Feasibility tools (TriNetX, i2b2) give cohort counts, not patient-level, evidence-backed eligibility.
-6. **So it is slow.** 45–60 minutes of chart review per patient (Callies et al. 2025). In our synthetic example: 220 DBS patients × about 185 documents each ≈ **40,000 documents**, about **190 coordinator-hours** to find about 23 eligible patients.
-
-**Speaker notes**
-* Say the question out loud, because the audience is thinking it: "Doesn't the hospital already have all this?"
-* "Yes, the information exists. But it is written in sentences, spread across five or more systems, and some of it goes stale. The EMR can find patients with a PD code; it cannot tell you whose last MoCA was 26 or which DBS contact is switched on."
-* Point to the screenshot: one patient, 311 documents, 6 that matter, in 5 systems. A coordinator does this by hand for every patient.
-* This is exactly the task language models are good at: reading sentences and pointing to where the answer is. Our design keeps the decision with people.
-* Pre-empt the follow-up "why not just add structured fields?": that helps in the long run, but it needs years of workflow change and does not cover external letters, scanned reports or vendor device data.
-
----
-
-### Slide 3C: Neuromodulation criteria, mapped to the evidence they need (Zoon et al. 2024)
-
-Optional if time is short. It narrows slide 3A to the running example.
-
-**On the slide:** the taxonomy table built from the Zoon et al. criteria.
-
-| Criterion (Zoon et al. 2024) | Criterion type | Where the evidence lives | What makes it hard |
-|---|---|---|---|
-| Idiopathic PD | Diagnosis | Clinic letters | Free text; atypical parkinsonism must be distinguished |
-| ≥ 3 months of STN DBS | Time window | Operative report | Date arithmetic; target (STN vs GPi) |
-| SAS ≥ 14 | Clinical scale + **recency** | Neuropsychology report | Often missing; old scores may no longer be true |
-| No permanent perioperative sequelae | Surgical history | Op note, discharge summary, imaging | Negation, temporality |
-| MoCA > 25 | Clinical scale + recency | Neuropsychology report | Cut-off direction ("25 or less" excludes) |
-| Not already on most dorsal contact bilaterally | **Device state** | **DBS programming report / vendor portal** | Often outside the EHR entirely |
-| Language | Administrative | Registration | Must be localised (Dutch → SG languages) |
-| Written informed consent | Process | Only at the consent visit | Unknowable from records by definition |
-
-**Speaker notes**
-* A model that says "not met" when it really means "I couldn't find it" silently removes eligible patients.
-* That is why our design treats *unknown* as a separate state, which leads to the research question.
-
----
-
-### Slide 4: Research question and hypotheses
-
-**On the slide**
-* **Question:** In a neuromodulation trial, does clinician-in-the-loop LLM pre-screening with three-state, evidence-linked verdicts maintain recall while reducing coordinator workload?
-* **H1 (sensitivity):** recall ≥ 0.95 for truly eligible patients against a blinded dual-reviewer reference standard.
-* **H2 (efficiency):** ≥ 50% reduction in coordinator minutes per patient pre-screened, compared with manual review.
-* **H3 (faithfulness):** ≥ 95% of displayed evidence quotes are verbatim present in the source document and support the verdict.
-* **Exploratory:** unknown rate by criterion type (device state vs scale vs diagnosis); subgroup recall by language and sex.
-* Small "primary outcome" badge on H1.
-
-**Speaker notes**
-* Recall is primary on purpose. In recruitment a false positive costs a few minutes of review; a false negative costs a participant.
-* The 0.95 threshold is a design choice we would pre-register. Invite the audience to challenge it.
-* H3 matters for trust: if the quote is real, the clinician can verify a verdict in seconds.
-
----
-
-### Slide 5: LLM screening is promising but unproven outside oncology and cardiology
-
-Keep your current "evidence" slide. Make it more rigorous by adding study design and the limitation of each study.
-
-| Study | Design | Key result | Limitation |
-|---|---|---|---|
-| Jin et al., *Nat Commun* 2024 (TrialGPT) | Retrospective, synthetic patient cohorts; small user study | 87.3% criterion-level accuracy (experts 88.7–90.0%); 42.6% less screening time | Synthetic patients; pilot user study (2 clinicians) |
-| Unlu et al., *JAMA* 2025 (RECTIFIER) | **Randomised**, n = 4,476, heart failure | AI arm: 458 vs 284 eligible identified; 35 vs 19 enrolled | Single centre, single trial |
-| Callies et al., arXiv 2025 (Inato) | Real-world, 485 patients, 36 trials | 87% accuracy; < 9 min vs 45–60 min per patient | Preprint; company-authored |
-| Parikh et al., *Nat Commun* 2026 | Randomised human vs human+AI, oncology | Accuracy 76% vs 71%; **worse when the AI was badly wrong** (automation bias) | Retrospective records; single centre |
-
-* Callout box: "**Gap:** no published evaluation in neuromodulation or device trials, and none evaluating screen-to-consent as one workflow."
-
-**Speaker notes**
-* The RECTIFIER RCT is the strongest design: randomised at patient level, and it shows enrolment, not just accuracy.
-* Parikh et al. is the cautionary result: humans followed the AI when it was wrong. That directly shaped our design, with unknowns shown openly, quotes required and no auto-approval.
+* The randomised heart-failure trial is the strongest evidence: randomised at patient level, and it measured enrolment, not just accuracy. AI roughly doubled enrolment (35 vs 19).
+* The Mayo +80% is striking, but it is an institutional report. Present it as encouraging, not proof. Its lesson is useful too: use dropped until the workflow was redesigned. Workflow matters as much as the model.
+* Parikh et al. is the cautionary result: people followed the AI when it was wrong. That shaped our design: unknowns are shown openly, every verdict carries a quote, and nothing is auto-approved.
 * Accuracy numbers are not comparable across studies (different tasks and denominators), so don't rank them against each other.
-* Mark Callies et al. as a preprint when you speak.
 
 ---
 
-### Slide 6: Method: the LLM reads, rules decide, people approve
+# PART 3: PLATFORM OVERVIEW
 
-**On the slide:** a horizontal pipeline diagram, with five boxes and arrows. Under each box, one line on *who or what* does it and *what is checked*.
+## Slide 3: One platform, five modules, from protocol to enrolled participant
 
-1. **Protocol → criteria checklist.** LLM extracts to a fixed JSON schema (field, operator, threshold, recency window, source sentence) → *research officer verifies*.
-2. **Records → evidence.** LLM extracts the value, date and a **verbatim quote** per criterion → *if the quote does not string-match the source, the verdict becomes "unknown"*.
-3. **Rules → verdict.** Deterministic, versioned rules → **met / not met / unknown**.
-4. **Ranking.** P(eligible) (next slide) → ordered review queue.
-5. **Clinician decision.** Research officer reviews, PI approves contact → eConsent → study ID → pseudonymised database.
+**On the slide:** a left-to-right flow chart (draw it in PowerPoint with rounded boxes and arrows; module colours all the same blue, with the human checkpoints in a different shape, e.g. a small person icon).
 
-* Side panel, "Why not end-to-end LLM judgement?": auditable rules · thresholds editable without re-prompting · extraction errors separable from logic errors · unknown cannot be hallucinated into "met".
+```
+ Trial protocol ──▶ [M1 Protocol digitiser] ──▶ verified criteria checklist
+                                                     │
+ Patient records ──▶ [M2 Pre-screening engine] ◀─────┘
+ (notes, scans,        reads records, checks each criterion, ranks patients
+  device reports)      across ALL open trials
+                              │
+                     👤 Research officer reviews evidence
+                     👤 Principal investigator approves contact
+                              │
+                     [M3 eConsent & onboarding] ──▶ consent, comprehension check, study ID
+                              │                       (identity locked in a separate vault)
+                              ▼
+                     [M4 Recruitment dashboard] ◀──▶ [M5 Study assistant]
+                       funnel, screen failures,        answers staff questions from
+                       overdue actions                 the protocol and the database
+
+ Running underneath everything: audit trail · role-based access · validation (shadow mode)
+```
+
+Under the chart, five one-line module summaries:
+
+| Module | What it does | Is AI involved? |
+|---|---|---|
+| **M1 Protocol digitiser** | Turns the protocol's eligibility text into a checklist of machine-checkable rules, each linked to its original sentence | Yes: a large language model (LLM) drafts; a person verifies |
+| **M2 Pre-screening engine** | Finds the evidence for each rule in each patient's records, gives met / not met / unknown, ranks patients by probability of eligibility, across every open trial | Yes: an LLM extracts evidence; fixed rules decide; maths ranks |
+| **M3 eConsent & onboarding** | Electronic consent with a comprehension check and form-version control; issues study IDs; keeps identities in a separate vault | No: deterministic software |
+| **M4 Recruitment dashboard** | Live funnel, which criteria exclude the most patients, enrolment against plan, overdue actions | No: database queries |
+| **M5 Study assistant** | Answers staff questions ("who is overdue for consent?") using only the protocol and the database, citing sources | Yes in the full version: the LLM chooses the query; the numbers come from the database |
 
 **Speaker notes**
-* The LLM is used only where language is the problem: reading protocols and notes.
-* Decisions are code: "MoCA ≤ 25 excludes" is a line an IRB can read and we can unit-test.
-* The quote-matching check is a simple, strong guard against fabricated evidence.
-* Every step is logged with model version and prompt hash, for TRIPOD-LLM reporting.
+* The two human checkpoints (marked with a person icon) are the design principle: **the AI reads, rules decide, people approve.**
+* AI is used only where language is the problem: reading protocols and notes. Everything that decides eligibility is transparent code.
+* The engine screens every patient against every open trial at once. A patient who doesn't fit the adaptive-DBS trial may fit the gait trial. Our prototype runs four Parkinson's trials: three motor (motor fluctuations, early motor complications, freezing of gait) and one non-motor (apathy).
+* Screenshot to show: `trials.png` (the trial portfolio page).
 
 ---
 
-### Slide 7: Ranking by the probability of eligibility, not by a black-box score
+# PART 4: MODULE BY MODULE
 
-**On the slide**
+For each module: **what it does → how it works (the mechanism) → what it looks like → how it addresses the problem.** M2 is the scientific core, so it gets three slides.
+
+## Slide 4.1 · Module 1, protocol digitiser: eligibility text becomes rules a computer can check, each traceable to its sentence
+
+**What it does.** Reads a trial protocol and produces a structured checklist of inclusion and exclusion criteria that can be applied automatically and edited by staff.
+
+**How it works (left half of the slide, a three-step diagram):**
+1. **Extract.** A large language model (LLM) reads the eligibility section and fills a fixed template for each criterion: *what is measured* (e.g. levodopa response), *comparison* (≥), *threshold* (50%), *unit* (%), *how recent it must be*, and the *original sentence*. The template is enforced as JSON (JavaScript Object Notation), so the model cannot return free-form text. *Prototype: a transparent offline text parser stands in for the LLM, so no data leaves the browser.*
+2. **Map.** Each criterion is linked to (a) a *data field* the engine knows how to read, (b) an *evidence source* (health record, device report, or "requires contact"), and (c) a small, tested *rule function*.
+3. **Verify.** A research officer reviews and edits every criterion before screening starts. Thresholds are editable. Changing one (e.g. MoCA cut-off 20 → 24) re-ranks the whole queue instantly.
+
+**A rule, shown as code (small box on the slide):**
+```
+levodopaResponseAtLeast(record, {min: 50}):
+    if no levodopa challenge report found  → UNKNOWN  ("No levodopa challenge test on file")
+    if improvement ≥ 50%                   → MET      + quote + document + date
+    otherwise                              → NOT MET  + quote + document + date
+```
+* Add a **freshness window** to scale scores: a Montreal Cognitive Assessment (MoCA) older than 365 days counts as *unknown*, not as met. Label these as "site rules", added by the study team, not part of the protocol.
+
+**Screenshot:** `protocol.png`, with callouts: (1) protocol wording kept verbatim, (2) editable threshold, (3) evidence-source badge (health record / device report / requires contact).
+
+**How it addresses the problem:** Reasons 1 and 5 from slide 2.3 (written, not coded; hospital search counts codes). The protocol becomes a precise, checkable query, and every check stays traceable to the protocol sentence for the ethics board (institutional review board, IRB) and the sponsor.
+
+**Speaker notes**
+* "Why not let the AI decide eligibility directly? Because a rule can be read, tested and audited. 'MoCA ≤ 20 excludes' is one line of code with a unit test. A model's judgement is not."
+* "Unknown" is built in from the start: if the evidence is not found, the rule cannot fire.
+* Mention the four protocols loaded in the prototype: one real, openly licensed protocol (Zoon et al., *Trials* 2024, apathy), one modelled on the EARLYSTIM trial (Schuepbach et al., *New England Journal of Medicine* 2013), and two illustrative motor protocols modelled on registered trials (adaptive DBS; spinal cord stimulation for freezing of gait).
+
+---
+
+## Slide 4.2 · Module 2, pre-screening engine (part 1): every verdict comes with a quoted sentence, and "unknown" is a real answer
+
+**What it does.** For every patient and every criterion, finds the evidence in the records and returns one of three verdicts: **met**, **not met** or **unknown**, with the sentence, document and date it came from.
+
+**How it works (diagram across the slide):**
+```
+Patient records ─▶ [LLM evidence extraction] ─▶ value + date + verbatim quote ─▶ [quote check] ─▶ [rule from M1] ─▶ verdict
+   notes, scans,      "find the latest MoCA"       "MoCA 29/30", 2025-06-04          quote must exist     MoCA > 20?        MET / NOT MET /
+   device reports                                                                   in the source text   and < 365 days?    UNKNOWN
+```
+1. **Evidence extraction (AI).** For each criterion, the large language model (LLM) is asked a narrow question ("What is the most recent Montreal Cognitive Assessment (MoCA) score, its date, and the exact sentence?") over that patient's documents, including scanned PDFs after text recognition.
+2. **Quote check (anti-hallucination guard).** The returned quote must be found word-for-word in the source document. If it isn't, the verdict is forced to *unknown*. This one string comparison blocks invented evidence.
+3. **Rule evaluation (deterministic).** The rule from Module 1 turns the value into met or not met, or *unknown* if the value is missing or older than the freshness window.
+
+* Three-verdict legend with an example each (from the screenshot):
+  * ✓ **Met**: "Bilateral STN DBS implanted 2023-05-20" → deep brain stimulation (DBS) for ≥ 3 months.
+  * ✕ **Not met**: e.g. "Levodopa/carbidopa dose last changed 12 days ago" → medication not stable for 30 days (pick a real example from your own screenshot).
+  * ? **Unknown**: "Last MoCA (29) is 530 days old, outside the 365-day window" → re-test needed.
+
+**Screenshot:** `screening.png`, the right-hand patient panel. Callouts on a quote box and on an *unknown* verdict.
+
+**How it addresses the problem:** Reasons 1–4 from slide 2.3. The tool reads the sentences (written, not coded), across systems (scattered), checks dates (out of date) and handles negation (needs interpretation). The coordinator now **checks evidence** instead of **searching for it**.
+
+**Speaker notes**
+* The most important design choice: **unknown is not the same as not met.** If a tool says "not met" when it means "I couldn't find it", eligible patients silently disappear. In neuromodulation, many facts (OFF-time diaries, device settings) are often simply not in the record.
+* The quote check is simple and strong. A clinician can verify any verdict in seconds by reading the quote.
+* In the prototype, the extraction step is simulated with pre-structured synthetic records; the rules, verdicts and ranking are the real code.
+
+---
+
+## Slide 4.3 · Module 2, pre-screening engine (part 2): patients are ranked by their probability of being eligible, across every open trial
+
+**What it does.** Turns each patient's verdicts into one interpretable number, the **match score**, and ranks the review queue by it. It does this for every trial at once.
+
+**How it works:**
 * The formula, large and centred:
 
-  **P(eligible) = ∏ over criteria of { 1 if met · 0 if not met · πᵢ if unknown }**
+  **Match score = P(eligible) = product over all criteria of { 1 if met · 0 if not met · π (the prior) if unknown }**
 
-  where πᵢ = (met + 1) / (assessable + 2) is estimated from the cohort's documented records (Laplace-smoothed). Consent uses a fixed prior from historical consent rates (0.70).
-* Worked example from the prototype (PT-1001): all criteria met except E4 (device state, unknown) and E5 (consent, unknown) → **0.88 × 0.70 = 0.61 (High)**.
-* Small table of the estimated priors for the Zoon criteria: I1 0.92 · I2 0.73 · I3 0.41 · E1 0.98 · E2 0.51 · E3 0.78 · E4 0.88 · E5 0.70 (fixed).
-* Freshness rule: SAS > 180 days old or MoCA > 365 days old → unknown, flagged for re-assessment. *These are site rules we added, not protocol rules. Say so.*
+* **π (the prior)** is the probability that an *unknown* criterion would turn out *met*. It is estimated from the documented records of patients who fail no other criterion (a conditional estimate), with Laplace smoothing: π = (met + 1) / (known + 2). Consent cannot be known from records, so it uses a fixed prior (0.70, from historical consent rates).
+* Bands: High ≥ 0.6 · Medium 0.3–0.6 · Low < 0.3 · Ineligible = 0 (any criterion not met).
+* Worked example from the screenshot (adaptive DBS trial, patient PT-2676): four criteria met, none failed, three unknown: medication stability (no prescribing history, π 0.70), cognition (last MoCA is 530 days old, π 0.86) and consent (π 0.70) → **0.70 × 0.86 × 0.70 = 0.42 → Medium**. Next on the list, PT-1244: OFF-time diary missing (π 0.56) × consent (0.70) = **0.39**.
+* **Cross-trial matching:** the same engine runs for all four trials, so each patient panel lists "Other trials for this patient". In the synthetic clinic, **89 patients are candidates (match score ≥ 0.30) for at least one trial, and 16 for two or more** (`screening-other-trials.png`, `trials.png`).
+
+**Why this design (a small side box):**
+* Interpretable: the panel shows the multiplication for every patient.
+* Honest about missing data: unknowns lower the score but never remove the patient.
+* A methods lesson we found while building it: priors must be *conditional*. Estimated across the whole clinic, "has a sensing pulse generator" got π = 0.14, because most patients have no DBS at all. That pushed eligible patients down the list. Estimated among patients still in the running, it is 0.43, and recall at our threshold went from 65% to 100% for that trial.
+* Known simplification: criteria are treated as independent (e.g. cognition and disease stage are correlated). With small trial cohorts, an interpretable model comes first; a learned model can be compared later.
 
 **Speaker notes**
-* The score has a meaning: under an independence assumption, it is the chance this patient turns out eligible.
-* It is fully decomposable. The UI shows the multiplication for every patient.
-* Independence is a known simplification (MoCA and apathy are correlated). With a small n, an interpretable model is the right first step. A learned model can be compared in Stage 2.
-* The score orders the queue. It never makes a decision.
+* "The score orders the queue. It never decides. The principal investigator approves every contact."
+* The conditional-prior finding is worth telling as a story: it is exactly the kind of subtle error that a validation step catches, and why we built validation into the platform.
 
 ---
 
-### Slide 8: Prototype: from protocol to an evidence-linked queue
+## Slide 4.4 · Module 2, pre-screening engine (part 3): in simulation, the engine finds 96–100% of eligible patients while staff read 7–21% of charts
 
-**On the slide:** two screenshots side by side, each with 2–3 numbered callouts.
-* `docs/screenshots/protocol.png`: (1) source sentence kept verbatim, (2) editable threshold, (3) evidence source chip (EHR / Device report / Requires contact).
-* `docs/screenshots/screening.png`: (1) ranked queue with met / not met / unknown tally, (2) score decomposition, (3) quoted evidence with document and date, (4) approve button enabled only for the PI role.
-* Caption: "Working prototype · synthetic data · runs entirely in the browser · open source on GitHub".
+**Mark the slide "Simulation · synthetic cohort".**
+
+**How we tested it (left, three lines):**
+* A synthetic clinic of **420 people with Parkinson's disease (PD)**, about 40% with deep brain stimulation (DBS). Each has a complete "truth" and a "documented" view in which facts are realistically missing or out of date. Distributions are in `docs/DATA.md`.
+* **Ground truth** = eligibility from the complete record. **The tool** sees only the documented record.
+* We fix the score cut-off at **0.10** in advance and measure **recall** (share of truly eligible patients the tool flags), **precision** (share of flagged patients who are truly eligible) and **workload** (share of charts a human still has to read).
+
+**Results table (right):**
+
+| Trial (symptom) | Truly eligible | Recall (95% CI) | Precision (95% CI) | Charts to read | PR-AUC |
+|---|---|---|---|---|---|
+| Adaptive DBS (motor fluctuations) | 17 of 420 | **100%** (82–100) | 34% (22–48) | **12%** | 0.60 |
+| Early STN-DBS (early motor complications) | 19 of 420 | **100%** (83–100) | 61% (44–76) | **7%** | 0.89 |
+| Spinal cord stimulation (freezing of gait) | 54 of 420 | **96%** (87–99) | 58% (48–68) | **21%** | 0.86 |
+| Dorsal STN-DBS (apathy) | 22 of 420 | **100%** (85–100) | 55% (40–69) | **10%** | 0.85 |
+
+CI = confidence interval (Wilson method). PR-AUC = area under the precision–recall curve; a random ranking would score roughly the prevalence (0.04–0.13).
+
+* Below the table: "What is most often **unknown** from records: OFF-time diary 70% · levodopa challenge 48% · freezing-of-gait frequency 37% · Hoehn and Yahr stage 26% · recent MoCA 24%." **These gaps are motor and neuromodulation-specific, which supports our problem statement.**
+* Time model (clearly labelled "assumption-driven"): adaptive-DBS trial, manual **≈ 370 coordinator-hours** (420 charts × 52.5 min) vs AI-assisted **≈ 7.5 hours** (50 flagged charts × 9 min).
+* Screenshot: `validation.png` (threshold chart).
 
 **Speaker notes**
-* Do the live demo here if time allows (90 seconds): change the SAS threshold from 14 to 12 and watch the queue re-rank; open a patient; show the PI-only approval.
-* Mention that the protocol is real (CC BY), but the patients are synthetic.
+* "This tests the method, not real-world performance."
+* Trade-off: raising the cut-off to 0.30 makes the list shorter and more precise but misses patients (e.g. early-DBS recall falls to 89%). For recruitment we prefer high recall: a false alarm costs minutes; a missed patient costs a participant.
+* Honest limitation: in the simulation, documented facts can be missing or old but never *wrong*. Real extraction will make some errors and recall will be lower. Measuring that is the first step of the validation plan (conclusion slide).
 
 ---
 
-### Slide 9: Prototype: consent, pseudonymisation, dashboard and a grounded assistant
+## Slide 4.5 · Module 3, eConsent and onboarding: consent is checked for understanding, and identities never leave the vault
 
-**On the slide:** a 2 × 2 grid of cropped screenshots (overview, participants, assistant, audit). One line each:
-* **Dashboard:** funnel 220 → 47 → 14 → 8 → 7; screen failures by criterion; enrolment vs plan (7 of 26, plan 15 by now).
-* **eConsent:** form version control (v2.0 flagged for re-consent); 5-item comprehension check, < 4/5 triggers a call-back.
-* **Identity vault:** study IDs everywhere; only the data-custodian role can resolve an ID, and each look-up is logged.
-* **Assistant:** answers only from database queries and protocol text, cites its sources, and refuses identity questions by role.
+**What it does.** Once the principal investigator (PI) approves contact: sends electronic consent (eConsent), checks the participant understood it, tracks form versions, issues a study ID, and separates identity from research data.
+
+**How it works:**
+* **Comprehension check:** five true/false statements before signing (e.g. "Your stimulator settings will change for one month at a time"). A score below 4/5 triggers a call-back before signature.
+* **Version control:** every signature is tied to the consent-form version. If the ethics board (institutional review board, IRB) approves a new version, participants on the old one are flagged for re-consent (the prototype flags v2.0 vs v2.1).
+* **Pseudonymisation:** the study database holds only study IDs (e.g. PT-2676). The link to the hospital record number lives in a **separate identity vault** with a separate key. Only the "data custodian" role can open it, and every look-up is logged with a reason.
+* **Overdue tracking:** invitations unsigned after 7 days are flagged.
+
+**Screenshot:** `participants.png`. Callouts: re-consent flag, "Waiting 12 d" overdue badge, locked identity column.
+
+**How it addresses the problem:** It removes the spreadsheets and emailed forms that follow screening, catches misunderstanding before signature, and keeps the research dataset clean for research use under Singapore's Human Biomedical Research Act (HBRA) and Personal Data Protection Act (PDPA).
 
 **Speaker notes**
-* The scientific point here is data governance, not features. Pseudonymisation by design keeps the analysis dataset clean for research use under HBRA.
-* "Screen failures by criterion" is research data too: it shows which eligibility rules shrink the pool. That can feed back into protocol design (e.g. the MoCA > 25 cut-off removes many otherwise eligible patients).
-* The assistant is staff-facing only. A patient-facing version is future work because ambiguous answers are the hard part.
+* No AI here, deliberately: consent must be deterministic and auditable.
+* Mention the measured outcomes the dashboard can report: median days from invitation to signature, and mean comprehension score.
 
 ---
 
-### Slide 10: In-silico shadow mode: ranking finds every eligible patient after reviewing 21% of charts
+## Slide 4.6 · Module 4, recruitment dashboard: it shows where patients are lost, criterion by criterion
 
-**Mark this slide "Simulation · synthetic cohort" in the title area.**
+**What it does.** A live view per trial: the funnel (identified → not ruled out → approved for contact → consented → enrolled), **screen failures by criterion**, **unknowns by criterion**, enrolment against plan, and a "needs attention" list.
 
-**On the slide**
-* Left, the threshold chart from `docs/screenshots/validation.png` (recall, precision and workload against threshold).
-* Right, a results table:
+**How it works:** plain database queries over the screening results and the consent tracker. Everything is recomputed when a criterion or a decision changes. No AI is involved.
 
-| Metric (threshold 0.10) | Value | 95% CI (Wilson) |
+**Screenshot:** `overview.png`. Callouts: (1) funnel, (2) screen failures by criterion, (3) enrolment vs plan.
+
+**How it addresses the problem:** Recruitment problems become visible and specific. "We're behind" becomes "the levodopa-challenge criterion is unknown for half the clinic: book challenge tests". The **screen-failure chart is also research data**: it shows which eligibility rules shrink the pool most, which can inform protocol design (an extension of the "criteria growth" point on slide 2.1).
+
+**Speaker notes**
+* Example to say aloud: in the adaptive-DBS trial, the OFF-time diary is unknown for most patients. The fix is operational (send diaries ahead of clinic visits), not more screening.
+
+---
+
+## Slide 4.7 · Module 5, study assistant: answers come from database queries, not from the model's memory
+
+**What it does.** Lets staff ask questions in plain language: "Which patients are one criterion short?", "Who is overdue for consent?", "What is the cognitive cut-off in this protocol?". Answers are cited, scoped to the user's role and logged.
+
+**How it works:**
+* **Prototype:** intent matching. The question is matched to one of a set of query functions, which run on the database and return numbers plus their sources.
+* **Full version:** a large language model (LLM) chooses which query function ("tool") to call and phrases the answer, but **every number comes from a query result, never from the model's memory**. This is the "tool-use" pattern.
+* **Guardrails:** grounded (sources listed under every answer) · scoped (asking for a patient's name is refused unless the role allows it) · advisory ("it suggests; a clinician decides") · logged (every question goes into the audit trail).
+
+**Screenshot:** `assistant.png`, showing one answer with source chips, and the refused identity question.
+
+**How it addresses the problem:** Coordinators and PIs get answers in seconds without building spreadsheets, and without the risk of a chatbot inventing numbers.
+
+**Speaker notes**
+* Staff-facing only. A patient-facing pre-screening chatbot is future work, because ambiguous answers are the hard part.
+
+---
+
+## Slide 4.8 · Across all modules: trust by design
+
+Short slide, presented as a failure-mode table. Scientists trust teams that name their failure modes.
+
+| What could go wrong | How the design prevents it | How we will measure it |
 |---|---|---|
-| Truly eligible | 23 / 220 (10.5%) | — |
-| Recall | **100%** (23/23) | 86–100% |
-| Precision | 49% (23/47) | 35–63% |
-| Charts needing human review | **21%** (47/220) | — |
-| Average precision (PR-AUC) | 0.75 | chance = 0.10 |
-| Modelled coordinator time | 193 h → 7 h | assumption-driven |
+| AI invents evidence | Quote must match the source word for word, otherwise "unknown" | % of quotes verbatim in source |
+| Missing or old data read as "not met" | Three verdicts; freshness windows | Unknown rate; recall |
+| Staff over-trust the AI (automation bias) | No auto-approval; unknowns shown; PI approval required | Override rate on deliberately seeded errors |
+| Some groups excluded unfairly | Language criterion localised; subgroup analysis | Recall by language, sex and age |
+| Privacy breach | Study IDs only; separate identity vault; role-scoped assistant; model run inside the hospital network | Audit-trail review |
 
-* Below: "Unknown from records: SAS 37% · MoCA 28% · device state 27% · perioperative 11% · diagnosis 3%."
-* Trade-off sentence: "Raising the threshold to 0.20 cuts review to 15% of charts but recall falls to 83% (19/23)."
+* Footer: "Designed with HBRA (Human Biomedical Research Act) and PDPA (Personal Data Protection Act) in mind. Ethics board (IRB), data protection officer and Ministry of Health review to be confirmed with the partner hospital. No regulatory claim yet."
 
-**Speaker notes**
-* Be explicit: this is a simulation that tests the *method*, not real-world performance.
-* How the cohort works: each synthetic patient has a full truth and a documented view with realistic missing and stale data. Distributions are in `docs/DATA.md`.
-* The key finding is the unknown pattern: device state and recent scale scores are the biggest gaps, which supports slide 3's claim.
-* An honest limit: in the simulation, documented values are never *wrong*, only missing. Real extraction errors will lower recall. That is exactly what Stage 1 measures.
-* The time model uses the 45–60 min manual and < 9 min assisted figures from Callies et al. We will measure both ourselves.
+**Screenshot (small):** `audit.png`.
 
 ---
 
-### Slide 11: Validation plan: three stages, pre-registered, with reporting standards
+# PART 5: CONCLUSION
 
-**On the slide:** a three-column timeline.
+## Slide 5.1: Conclusion: what we showed, how we will test it, what we need
 
-| | Stage 1: Retrospective shadow mode | Stage 2: Prospective pilot | Stage 3: Multi-trial, multi-site |
-|---|---|---|---|
-| Setting | One closed neuromodulation trial at a partner hospital | One recruiting trial | 3+ trials (DBS, VNS, SCS), 2+ sites |
-| Design | AI ranks the full historical screening population; **reference standard = two blinded independent chart reviewers plus adjudication** | Patient-level randomisation of the pre-screening method (AI-assisted vs manual), following the Unlu et al. design | Stepped rollout |
-| Primary outcome | Recall at the pre-specified threshold (H1); quote faithfulness (H3) | Coordinator minutes per patient (H2); time from identification to consent | Enrolment rate per month; generalisability |
-| Sample size | To estimate recall of 0.95 to ± 0.07 (95% CI) needs **≈ 38 eligible patients** (n = z²·p(1−p)/d²). At ~10% prevalence, about **380 charts** | Powered on minutes per patient from Stage 1 variance | — |
-| Safety | Error analysis by criterion type | Automation-bias check: seeded "known wrong" AI suggestions, measure override rate | Subgroup recall by language, sex, age |
+**On the slide**, three blocks:
 
-* Footer: "Reported per TRIPOD-LLM and DECIDE-AI. Protocol pre-registered before unblinding."
+**What we showed**
+1. Recruitment is a leading cause of neuromodulation trial failure. The bottleneck is reading records: the facts exist, but as sentences across 5+ systems.
+2. Our platform reads the evidence, applies transparent rules, gives *met / not met / unknown* with a quote, and ranks patients across all open trials. People make every decision.
+3. In simulation across three motor trials and one apathy trial, it found **96–100%** of eligible patients while staff read only **7–21%** of charts.
 
-**Speaker notes**
-* Stage 1 is cheap and uses no new patient contact, so it is the right first ask.
-* We fix the threshold *before* seeing the reference standard, to avoid tuning to the answer.
-* The seeded-error check directly addresses Parikh et al.'s automation-bias finding.
-* Fairness: the language criterion could systematically exclude some groups, so we report recall by language.
-* Fill in durations once the partner site is confirmed. Stage 1 is realistic in about 3–4 months after IRB approval.
-
----
-
-### Slide 12: Safety and governance by design
-
-Keep your "Trust by design" slide, but present it as a **failure-mode table**. Scientists trust a team that names its failure modes.
-
-| Failure mode | Mitigation in the design | How we measure it |
+**How we will test it for real (a three-step timeline)**
+| Stage 1: shadow mode (retrospective) | Stage 2: pilot (prospective) | Stage 3: scale |
 |---|---|---|
-| Hallucinated evidence | Quote must string-match the source, otherwise "unknown" | Quote faithfulness (H3) |
-| Missing or stale data read as "not met" | Three-state verdicts; freshness windows | Unknown rate; recall |
-| Automation bias | No auto-approval; unknowns shown openly; PI approval required | Override rate on seeded errors |
-| Biased exclusion | Subgroup analysis; language criterion localised | Recall by subgroup |
-| Privacy breach | Study IDs only; separate identity vault; role-scoped assistant; on-premise model | Audit log review |
-| Protocol drift | Criteria versioned; consent-form version control | Audit trail |
+| Replay one closed Parkinson's neuromodulation trial. Reference standard: two blinded reviewers plus adjudication. **~380 charts** gives a ±7% interval on recall around 95%. | Randomise patients to AI-assisted vs manual pre-screening (as in the heart-failure RCT, randomised controlled trial). Outcomes: minutes per patient, time to consent, enrolled per month. | More trials (deep brain, spinal cord, vagus nerve stimulation), more sites. |
 
-* Footer: "Designed with Singapore's HBRA and PDPA in mind. IRB, DPO and MOH review to be confirmed with the partner hospital. We make no regulatory claim yet."
+**What we need**
+* One closed neuromodulation trial's protocol and screening log (for Stage 1)
+* A principal investigator and research-coordinator partner
+* [Funding amount] for 12 months · ethics (IRB) sponsorship
 
-**Speaker notes**
-* The PI approves every contact: decision support, not autonomous screening.
-* Data stays inside the hospital network, either with a locally hosted model or an approved enterprise endpoint.
-* Whether this counts as software as a medical device depends on intended use. Because it supports research recruitment, not diagnosis or treatment, we expect it falls outside, but we will confirm with HSA. Say this as a question, not a claim.
-
----
-
-### Slide 13: Limitations and open questions
-
-**On the slide:** two columns.
-
-*Limitations*
-* Simulation shows missing data only, not extraction error.
-* The independence assumption in the score.
-* Priors are site-specific and may be poorly calibrated at a new site.
-* Device-state data may be unreachable without vendor-portal integration.
-* One protocol so far; the dorsal-contact criterion is unusual.
-
-*Open questions for the audience*
-* What recall threshold would a PI accept?
-* Is "time to consent" or "enrolment rate" the better primary outcome for Stage 2?
-* Can programming-report data be accessed in A\*STAR-partner hospitals?
+* QR codes: live prototype (GitHub Pages link) and code repository.
 
 **Speaker notes**
-* Inviting critique is a strength with a scientific audience.
-* Use this slide to turn Q&A into collaboration: "if you run a neuromodulation trial, we would like your closed trial for Stage 1".
-
----
-
-### Slide 14: Summary and what we need
-
-**On the slide**
-* Three takeaway lines:
-  1. Neuromodulation eligibility depends on device-state and recency-sensitive scale evidence that standard EHR fields do not hold.
-  2. Three-state, evidence-linked verdicts with probabilistic ranking found every eligible patient in simulation, with humans reviewing 21% of charts.
-  3. A pre-registered three-stage validation will test whether this holds on real records.
-* **What we need:** (a) one closed neuromodulation trial's protocol and screening log for Stage 1; (b) a clinical PI and research officer partner; (c) [funding amount] for 12 months; (d) IRB sponsorship.
-* QR code to the live prototype (GitHub Pages link) and to the repository.
-
-**Speaker notes**
-* Restate the question from slide 4 and answer it: "promising in simulation; here is how we will find out for real".
-* End on the ask, then say thank you and open the floor.
+* Restate the problem in one sentence, then the answer: "promising in simulation; here is exactly how we'll find out for real."
+* Limitations to say out loud (don't hide them): the simulation does not include AI reading errors; the score assumes criteria are independent; priors must be re-estimated per site; device data may need manufacturer cooperation.
+* Close: "If you run a neuromodulation trial, we'd like your closed trial for Stage 1." Then thank you and questions.
 
 ---
 
 ## Backup slides (after "Thank you")
 
-1. **Competitive landscape** (your current slide 11). Seniors may ask, but it is not part of the scientific story. Keep it as backup.
-2. **Workflow today vs with the co-pilot** (your current slide 5 table). Good for clinician questions.
-3. **Synthetic data generation:** the table from `docs/DATA.md`.
-4. **Second protocol: illustrative adaptive DBS**, showing that the method generalises to device criteria (sensing IPG, OFF-time diary). It is labelled illustrative in the prototype.
-5. **Architecture and deployment:** the diagram from `docs/ARCHITECTURE.md`.
-6. **Sample-size calculation** worked out, with the Wilson interval formula.
+1. **Glossary**: the table at the top of this guide.
+2. **Worked sample-size calculation**: n = z² · p(1 − p) / d² = 1.96² × 0.95 × 0.05 / 0.07² ≈ 38 truly eligible patients; at ~10% prevalence ≈ 380 charts. The Wilson interval formula.
+3. **Synthetic data generation**: the table from `docs/DATA.md`.
+4. **Architecture and deployment**: from `docs/ARCHITECTURE.md` (model runs inside the hospital network; every model call logged with version and prompt).
+5. **The four protocols and their sources**: adaptive DBS (modelled on the design of ADAPT-PD, NCT04547712; criteria illustrative); early STN-DBS (modelled on EARLYSTIM, NCT00354133); spinal cord stimulation for freezing of gait (drawing on NCT06798844 and NCT05148468; illustrative); dorsal STN-DBS for apathy (Zoon et al. 2024, real protocol, CC BY 4.0 licence).
+6. **Competitive landscape**: Tempus/Deep 6 AI, Oncoshot, Antidote, TriNetX (from your earlier draft).
 
 ---
 
-## Mapping from your current draft
-
-| Current slide | Action |
-|---|---|
-| 1 (blank) | Delete |
-| 2 Database – DBS trials | Delete; content moves to slides 3C and 7 |
-| 3 Title | Retitle as on slide 1 above |
-| 4 The problem | Rework as slide 2 (DBS-specific evidence, not Tufts) |
-| 5 Research officer's day | Move to backup |
-| 6 Four modules | Merge into slide 9 |
-| 7 Protocol matching | Becomes slides 6–8 (method, scoring, prototype) |
-| 8 Chatbot | Merge into slide 9 |
-| 9 Funnel | Merge into slide 9 |
-| 10 Evidence | Slide 5, with design and limitation columns added |
-| 11 Landscape | Backup |
-| 12 Trust by design | Slide 12 as a failure-mode table |
-| 13 Plan | Slide 11, with sample size and outcomes |
-| 14 Ask | Slide 14 |
-| *new* | Slides 3A (what clinicians check), 3B (why having the data is not enough), 3C (Zoon taxonomy), 4 (hypotheses), 10 (simulation results), 13 (limitations) |
-
 ## References to verify before presenting
 
-Check every figure against the primary source. Some figures came from abstracts or press summaries.
+Some figures came from abstracts or press summaries. Check each against the primary source.
 
-* Zoon TJC et al. *Trials* 2024;25:104. doi:10.1186/s13063-024-07938-9 (CC BY 4.0). Check the paraphrased exclusion criteria (a), (c), (d) against the full text.
-* Mishra et al. Why are clinical trials of deep brain stimulation terminated? *World Neurosurg X* 2024; plus the revised version (Shafqat & Okon).
-* Jin Q et al. Matching patients to clinical trials with large language models. *Nat Commun* 2024. doi:10.1038/s41467-024-53081-z
+* Mishra et al. Why are clinical trials of deep brain stimulation terminated? An analysis of ClinicalTrials.gov. *World Neurosurgery: X* 2024 (and the revised version).
+* Carlisle B et al. Unsuccessful trial accrual and human subjects protections. *Clinical Trials* 2015.
+* Thoracic oncology clinical trial eligibility criteria and requirements continue to increase in number and complexity. *Journal of Thoracic Oncology* 2017.
+* Eligibility-criteria growth and accrual failure in NCI-affiliated trials. *Cancer Medicine* (odds ratio 1.09 per decile).
+* Artusi CA et al. Deep brain stimulation selection criteria for Parkinson's disease: time to go beyond CAPSIT-PD. *Journal of Clinical Medicine* 2020;9:3931.
+* Ateya MB et al. *BMC Medical Informatics and Decision Making* 2016;16:1 (structured EHR data for trial criteria).
+* EHR4CR/InSite feasibility study, 23 protocols, 24 hospitals, median 55% computable (find the exact 2019 citation).
+* Ministry of Health Singapore / Synapxe: NGEMR rollout status.
 * Unlu O et al. Manual vs AI-assisted prescreening for trial eligibility using large language models: a randomized clinical trial. *JAMA* 2025. doi:10.1001/jama.2024.28047
-* Callies A et al. Real-world validation of a multimodal LLM-powered pipeline… arXiv:2503.15374 (2025), a preprint.
-* Parikh RB et al. Human-AI teaming to improve accuracy and efficiency of eligibility prescreening for oncology trials. *Nat Commun* 2026. doi:10.1038/s41467-026-68873-8 (NCT06561217)
-* Carlisle B et al. Unsuccessful trial accrual and human subjects protections. *Clin Trials* 2015, if you use the general-trials figure.
-* Ateya MB et al. The value of structured data elements from electronic health records for identifying subjects for primary care clinical trials. *BMC Med Inform Decis Mak* 2016;16:1.
-* EHR4CR / InSite feasibility study of 23 oncology protocols across 24 European hospitals (median 55% of criteria computable). Find the exact citation (2019) before presenting.
-* Thoracic oncology clinical trial eligibility criteria and requirements continue to increase in number and complexity. *J Thorac Oncol* 2017 (ECOG trials, median 17 → 28).
-* Eligibility-criteria growth and accrual failure in NCI-affiliated trials, *Cancer Medicine* (OR 1.09 per decile).
-* Artusi CA et al. Deep brain stimulation selection criteria for Parkinson's disease: time to go beyond CAPSIT-PD. *J Clin Med* 2020;9:3931.
-* MOH Singapore: NGEMR rollout status (NUHS and NHG completed July 2024; SingHealth 2026–28).
-* TRIPOD-LLM (Gallifant et al., *Nat Med* 2025) and DECIDE-AI (Vasey et al., *Nat Med* / *BMJ* 2022), the reporting guidelines.
+* Mayo Clinic and IBM Watson clinical-trial matching, 2018 coverage (e.g. Healthcare IT News; HealthExec).
+* Jin Q et al. Matching patients to clinical trials with large language models. *Nature Communications* 2024. doi:10.1038/s41467-024-53081-z
+* Callies A et al. arXiv:2503.15374 (2025), a preprint.
+* Parikh RB et al. Human–AI teaming for eligibility prescreening in oncology trials. *Nature Communications* 2026. doi:10.1038/s41467-026-68873-8
+* Schuepbach WMM et al. Neurostimulation for Parkinson's disease with early motor complications. *New England Journal of Medicine* 2013;368:610–622 (EARLYSTIM). Check the Hoehn and Yahr threshold; sources disagree (≤ 2.5 vs < 3).
+* ADAPT-PD (NCT04547712), *JAMA Neurology* publication on adaptive DBS.
+* Spinal cord stimulation for freezing of gait: NCT06798844 (KU Leuven), NCT05148468.
+* Zoon TJC et al. *Trials* 2024;25:104. doi:10.1186/s13063-024-07938-9 (CC BY 4.0).

@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useMemo, useState, type ReactNo
 import { COHORT } from '../data/cohort';
 import { PROTOCOLS } from '../data/protocols';
 import { screenCohort } from '../engine/matcher';
-import type { AuditEntry, Decision, Patient, Protocol, Role, ScreeningResult, Stage } from '../engine/types';
+import type { AuditEntry, Decision, Patient, Pipeline, Protocol, Role, ScreeningResult, Stage } from '../engine/types';
 
 interface Store {
   protocols: Protocol[];
@@ -15,7 +15,10 @@ interface Store {
   priors: Record<string, number>;
   byId: Map<string, Patient>;
   resultById: Map<string, ScreeningResult>;
-  stageOf: (p: Patient) => Stage;
+  stageOf: (p: Patient, protocolId?: string) => Stage;
+  pipelineOf: (p: Patient, protocolId?: string) => Pipeline | undefined;
+  /** Screening of every patient against every trial (for cross-trial matching). */
+  portfolio: Record<string, Map<string, ScreeningResult>>;
   decisions: Record<string, Decision>;
   decide: (d: Omit<Decision, 'at' | 'by' | 'protocolId'>) => void;
   role: Role;
@@ -38,7 +41,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [decisions, setDecisions] = useState<Record<string, Decision>>({});
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [audit, setAudit] = useState<AuditEntry[]>([
-    { at: now(), role: 'Research officer', action: 'Session started', detail: 'Synthetic cohort loaded (n = 220). No real patient data.' },
+    { at: now(), role: 'Research officer', action: 'Session started', detail: `Synthetic cohort loaded (n = ${COHORT.length}). No real patient data.` },
   ]);
 
   const log = useCallback(
@@ -51,13 +54,19 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const byId = useMemo(() => new Map(COHORT.map((p) => [p.id, p])), []);
   const resultById = useMemo(() => new Map(screening.map((r) => [r.patientId, r])), [screening]);
 
+  const portfolio = useMemo(
+    () => Object.fromEntries(protocols.map((pr) => [pr.id, new Map(screenCohort(pr, COHORT).results.map((r) => [r.patientId, r]))])),
+    [protocols],
+  );
+
+  const pipelineOf = useCallback((p: Patient, pid: string = protocolId) => p.pipelines[pid], [protocolId]);
   const stageOf = useCallback(
-    (p: Patient): Stage => {
-      const d = decisions[`${protocolId}:${p.id}`];
-      if (protocolId !== 'dstn-apathy') return d?.action === 'approve' ? 'Approved for contact' : 'Pre-screened';
-      if (d?.action === 'approve' && p.stage === 'Pre-screened') return 'Approved for contact';
+    (p: Patient, pid: string = protocolId): Stage => {
+      const d = decisions[`${pid}:${p.id}`];
+      const base = p.pipelines[pid]?.stage ?? 'Pre-screened';
+      if (d?.action === 'approve' && base === 'Pre-screened') return 'Approved for contact';
       if (d?.action === 'reject') return 'Pre-screened';
-      return p.stage;
+      return base;
     },
     [decisions, protocolId],
   );
@@ -96,6 +105,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     byId,
     resultById,
     stageOf,
+    pipelineOf,
+    portfolio,
     decisions,
     decide: (d) => {
       setDecisions((ds) => ({ ...ds, [`${protocolId}:${d.patientId}`]: { ...d, protocolId, by: role, at: now() } }));

@@ -42,7 +42,7 @@ export function ProtocolPage() {
                 {c.siteRule && <div className="tiny" style={{ color: 'var(--warn)', marginTop: 4 }}>Site rule · {c.siteRule}</div>}
               </td>
               <td><span className="chip ink">{c.category}</span></td>
-              <td><span className={`chip ${SOURCE_CLS[c.evidenceSource]}`}>{c.evidenceSource}</span></td>
+              <td><span className={`chip ${SOURCE_CLS[c.evidenceSource]}`}>{c.evidenceSource === 'EHR' ? 'Health record (EHR)' : c.evidenceSource}</span></td>
               <td>
                 <div className="stack" style={{ gap: 6 }}>
                   {c.params.map((p) => (

@@ -6,7 +6,7 @@ import { useStore } from '../state/store';
 type Msg = ({ from: 'user'; text: string }) | ({ from: 'bot' } & Answer);
 
 export function Assistant() {
-  const { protocol, patients, screening, stageOf, role, log } = useStore();
+  const { protocol, patients, screening, stageOf, pipelineOf, role, log } = useStore();
   const [msgs, setMsgs] = useState<Msg[]>([
     { from: 'bot', text: `I answer questions about ${protocol.shortName} using only the protocol and the study database. Every answer lists its sources. I suggest; a clinician decides.`, sources: [] },
   ]);
@@ -16,7 +16,7 @@ export function Assistant() {
 
   const ask = (text: string) => {
     if (!text.trim()) return;
-    const a = answer(text, { protocol, patients, screening, stageOf, role });
+    const a = answer(text, { protocol, patients, screening, stageOf: (p) => stageOf(p), pipelineOf: (p) => pipelineOf(p), role });
     setMsgs((m) => [...m, { from: 'user', text }, { from: 'bot', ...a }]);
     log('Assistant query', `“${text}”${a.refused ? ' (refused: out of scope for role)' : ''}`);
     setQ('');
@@ -49,7 +49,7 @@ export function Assistant() {
         </section>
         <div className="stack" style={{ gap: 20 }}>
           <Panel title="Suggested questions" flush>
-            {[...SUGGESTIONS, 'What is the name of PT-1015?'].map((s) => (
+            {[...SUGGESTIONS, `Why is ${screening[0].patientId} ranked where it is?`, `What is the name of ${screening[0].patientId}?`].map((s) => (
               <button key={s} className="list-row" onClick={() => ask(s)}><span>{s}</span><Icon name="arrow" size={14} /></button>
             ))}
           </Panel>

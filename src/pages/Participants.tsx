@@ -13,10 +13,11 @@ const QUESTIONS = [
 ];
 
 export function Participants() {
-  const { patients, stageOf, role, log, protocol } = useStore();
+  const { patients, stageOf, pipelineOf, role, log, protocol } = useStore();
+  const cons = (p: (typeof patients)[number]) => pipelineOf(p)?.consent ?? { formVersion: '—' };
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const rows = patients.filter((p) => ['Approved for contact', 'Consented', 'Enrolled'].includes(stageOf(p)))
-    .sort((a, b) => (b.consent.invitedOn ?? '').localeCompare(a.consent.invitedOn ?? ''));
+    .sort((a, b) => (cons(b).invitedOn ?? '').localeCompare(cons(a).invitedOn ?? ''));
 
   const reveal = (id: string) => {
     if (role !== 'Data custodian') return;
@@ -24,13 +25,13 @@ export function Participants() {
     log('Identity vault access', `Resolved ${id} → vault key (reason: scheduling consent visit)`);
   };
 
-  if (protocol.id !== 'dstn-apathy')
+  if (protocol.status !== 'Recruiting')
     return <><PageHead crumbs={[protocol.shortName, 'Participants']} title="Participants" /><section className="card card-pad muted">This study is in feasibility assessment. Switch to the recruiting study to see participants.</section></>;
 
-  const signed = rows.filter((p) => p.consent.signedOn);
-  const avgComp = signed.length ? signed.reduce((a, p) => a + (p.consent.comprehension ?? 0), 0) / signed.length : 0;
-  const waiting = rows.filter((p) => !p.consent.signedOn);
-  const medianDays = (() => { const d = signed.map((p) => daysBetween(p.consent.invitedOn!, p.consent.signedOn!)).sort((a, b) => a - b); return d.length ? d[Math.floor(d.length / 2)] : 0; })();
+  const signed = rows.filter((p) => cons(p).signedOn);
+  const avgComp = signed.length ? signed.reduce((a, p) => a + (cons(p).comprehension ?? 0), 0) / signed.length : 0;
+  const waiting = rows.filter((p) => !cons(p).signedOn);
+  const medianDays = (() => { const d = signed.map((p) => daysBetween(cons(p).invitedOn!, cons(p).signedOn!)).sort((a, b) => a - b); return d.length ? d[Math.floor(d.length / 2)] : 0; })();
 
   return (
     <>
@@ -41,7 +42,7 @@ export function Participants() {
       />
       <Stats items={[
         { label: 'Invited', value: rows.length },
-        { label: 'Awaiting signature', value: waiting.length, sub: `${waiting.filter((p) => daysBetween(p.consent.invitedOn!, TODAY) > 7).length} over 7 days` },
+        { label: 'Awaiting signature', value: waiting.length, sub: `${waiting.filter((p) => daysBetween(cons(p).invitedOn!, TODAY) > 7).length} over 7 days` },
         { label: 'Median invite → signature', value: <>{medianDays}<small> days</small></> },
         { label: 'Mean comprehension score', value: <>{avgComp.toFixed(1)}<small> / 5</small></> },
       ]} />
@@ -55,16 +56,16 @@ export function Participants() {
             <tbody>
               {rows.map((p) => {
                 const st = stageOf(p);
-                const wait = p.consent.invitedOn && !p.consent.signedOn ? daysBetween(p.consent.invitedOn, TODAY) : null;
+                const wait = cons(p).invitedOn && !cons(p).signedOn ? daysBetween(cons(p).invitedOn!, TODAY) : null;
                 return (
                   <tr key={p.id}>
                     <td className="mono id">{p.id}</td>
                     <td><span className={`chip ${st === 'Enrolled' ? 'met' : st === 'Consented' ? 'accent' : 'ink'}`}><span className="dot" />{st}</span></td>
-                    <td>{p.consent.formVersion === 'v2.1' ? <span className="chip ink">v2.1 · current</span> : <span className="chip unknown">v2.0 · re-consent</span>}</td>
-                    <td className="small">{p.consent.invitedOn ?? '—'}</td>
-                    <td className="small">{p.consent.signedOn ?? (wait !== null ? <span className={`chip ${wait > 7 ? 'notmet' : 'unknown'}`}>Waiting {wait} d</span> : '—')}</td>
-                    <td className="num">{p.consent.comprehension !== undefined ? (p.consent.comprehension < 4 ? <span className="chip unknown">{p.consent.comprehension}/5 · call back</span> : `${p.consent.comprehension}/5`) : '—'}</td>
-                    <td>{p.consent.surveysComplete === undefined ? '—' : p.consent.surveysComplete ? <span className="chip met">Complete</span> : <span className="chip unknown">Pending</span>}</td>
+                    <td>{cons(p).formVersion === 'v2.1' ? <span className="chip ink">v2.1 · current</span> : <span className="chip unknown">v2.0 · re-consent</span>}</td>
+                    <td className="small">{cons(p).invitedOn ?? '—'}</td>
+                    <td className="small">{cons(p).signedOn ?? (wait !== null ? <span className={`chip ${wait > 7 ? 'notmet' : 'unknown'}`}>Waiting {wait} d</span> : '—')}</td>
+                    <td className="num">{cons(p).comprehension !== undefined ? (cons(p).comprehension! < 4 ? <span className="chip unknown">{cons(p).comprehension}/5 · call back</span> : `${cons(p).comprehension}/5`) : '—'}</td>
+                    <td>{cons(p).surveysComplete === undefined ? '—' : cons(p).surveysComplete ? <span className="chip met">Complete</span> : <span className="chip unknown">Pending</span>}</td>
                     <td><Avatar sm initials={assigneeOf(p).initials} /></td>
                     <td className="nowrap">
                       {revealed[p.id] ? <span className="mono small">{p.vaultKey}</span> : (

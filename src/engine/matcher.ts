@@ -10,22 +10,29 @@ export function evaluateCriterion(c: Criterion, facts: PatientFacts): CriterionR
 }
 
 /**
- * Priors for "unknown" criteria are estimated empirically from the cohort: the share of patients
- * whose documented records satisfy the criterion. Criteria that can never be assessed from records
- * (e.g. consent) use a fixed prior set by the study team.
+ * Priors for "unknown" criteria are estimated empirically from the cohort's documented records.
+ *
+ * They are CONDITIONAL: for criterion c we only count patients who fail no OTHER criterion. That
+ * approximates P(c met | patient still in the running), which is what matters when ranking. (A marginal
+ * prior would, for example, say only 14% of patients have a sensing pulse generator, because most
+ * patients have no DBS at all; among patients who already pass the DBS criteria it is much higher.)
+ * Laplace smoothing keeps priors away from 0 and 1. Criteria that can never be assessed from records
+ * (consent) use a fixed prior set by the study team.
  */
 export function estimatePriors(protocol: Protocol, patients: Patient[]): Record<string, number> {
+  const active = protocol.criteria.filter((c) => c.enabled);
+  const verdicts = patients.map((p) => active.map((c) => evaluateCriterion(c, p.documented).verdict));
   const priors: Record<string, number> = {};
-  for (const c of protocol.criteria) {
-    if (c.fixedPrior !== undefined) { priors[c.id] = c.fixedPrior; continue; }
+  active.forEach((c, j) => {
+    if (c.fixedPrior !== undefined) { priors[c.id] = c.fixedPrior; return; }
     let met = 0, known = 0;
-    for (const p of patients) {
-      const v = evaluateCriterion(c, p.documented).verdict;
-      if (v !== 'unknown') { known++; if (v === 'met') met++; }
-    }
-    // Laplace smoothing keeps priors away from 0 and 1 for rare criteria.
+    verdicts.forEach((v) => {
+      if (v.some((x, k) => k !== j && x === 'not_met')) return;
+      if (v[j] !== 'unknown') { known++; if (v[j] === 'met') met++; }
+    });
     priors[c.id] = (met + 1) / (known + 2);
-  }
+  });
+  protocol.criteria.filter((c) => !c.enabled).forEach((c) => (priors[c.id] = c.fixedPrior ?? 0.5));
   return priors;
 }
 
